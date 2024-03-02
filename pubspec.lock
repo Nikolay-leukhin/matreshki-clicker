@@ -75,6 +75,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  js:
+    dependency: transitive
+    description:
+      name: js
+      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.7"
   lints:
     dependency: transitive
     description:
@@ -152,6 +160,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  tele_web_app:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: b15be2c96b9ac7b573a9d0087379bb842a282e59
+      url: "https://github.com/yeikel16/tele_web_app.git"
+    source: git
+    version: "0.0.1"
   term_glyph:
     dependency: transitive
     description:
