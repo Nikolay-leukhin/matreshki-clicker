@@ -45,11 +45,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final hmacSha256 = Hmac(sha256, utf8.encode("WebAppData"));
-    final secret_key = hmacSha256.convert(utf8.encode("7105187689:AAFH7mZcjzXSLoZX7wffgZyokuk1iEagYwA"));
+    // final hmacSha256 = Hmac(sha256, utf8.encode("WebAppData"));
+    // final secret_key = hmacSha256.convert(utf8.encode("7105187689:AAFH7mZcjzXSLoZX7wffgZyokuk1iEagYwA"));
     
-    final decoder = Hmac(sha256, secret_key.bytes);
-    final res = decoder.convert(utf8.encode(UrlSearchParams(tg.initData).get("hash")!));
+    // final decoder = Hmac(sha256, secret_key.bytes);
+    // final res = decoder.convert(utf8.encode(UrlSearchParams(tg.initData).get("hash")!));
 
     return Scaffold(
       appBar: AppBar(
@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             Text(
-              res.toString(),
+              tg.initDataUnsafe.user!.id.toString(),
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
