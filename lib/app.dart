@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:matreshka/routes/routes.dart';
+import 'package:matreshka/routes/routes_names.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -14,6 +15,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'matreshki',
+      initialRoute: AppRouteNames.main,
       onGenerateRoute: AppRoutes.generateRoute,
       builder: (context, child) => MediaQuery(
           data: MediaQuery.of(context)
