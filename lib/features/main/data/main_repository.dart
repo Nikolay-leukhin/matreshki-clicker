@@ -9,7 +9,9 @@ class MainRepository {
 
   UserModel get user => _user;
 
-  MainRepository() {}
+  MainRepository() {
+    initTelegramActions();
+  }
 
   Future<void> initData() async {
     tg = TeleWebApp();
@@ -28,6 +30,12 @@ class MainRepository {
 
   incrementLocalUserScore() async {
     user.score += 1;
+  }
+
+  initTelegramActions() {
+    tg.backButton.onClick(() {
+      updateData();
+    });
   }
 
   updateData() async {
