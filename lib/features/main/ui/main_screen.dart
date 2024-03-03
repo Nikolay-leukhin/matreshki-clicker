@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
 import 'package:matreshka/features/main/logic/main/main_cubit.dart';
+import 'package:matreshka/routes/routes_names.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -26,16 +27,6 @@ class _MainScreenState extends State<MainScreen> {
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text("Матрешки"),
-        actions: [
-          IconButton(
-              onPressed: () {
-                mainRepository.closeApp();
-              },
-              icon: const Icon(Icons.close))
-        ],
-      ),
       body: Container(
         width: size.width,
         padding: const EdgeInsets.all(10),
@@ -56,6 +47,31 @@ class _MainScreenState extends State<MainScreen> {
                 color: Colors.red,
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRouteNames.boosts);
+                  },
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    color: Colors.blue,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRouteNames.market);
+                  },
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    color: Colors.green,
+                  ),
+                )
+              ],
+            )
           ],
         ),
       ),

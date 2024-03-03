@@ -1,3 +1,5 @@
 class AppRouteNames {
-  static const String root = '/';
+  static const String main = '/';
+  static const String market = '/market';
+  static const String boosts = '/boosts';
 }
