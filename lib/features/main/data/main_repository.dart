@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:matreshka/models/user_model.dart';
 import 'package:matreshka/services/firebase/firebase_collections.dart';
 import 'package:tele_web_app/tele_web_app.dart';
@@ -10,24 +9,21 @@ class MainRepository {
 
   UserModel get user => _user;
 
-  MainRepository() {
-    initData();
-  }
+  MainRepository() {}
 
-  initData() async {
+  Future<void> initData() async {
     tg = TeleWebApp();
     late final int userId;
     try {
       userId = tg.initDataUnsafe.user!.id;
     } catch (e) {
-      userId = 879223741;
+      userId = 1181861492;
     }
+    final userDoc = FirebaseCollections.userCollection.doc(userId.toString());
+    final score = (await userDoc.get()).data()!['score'];
 
-    final userDoc = FirebaseCollections.userCollection.doc(_user.id.toString());
-    final data = (await userDoc.get()).data()!['score'];
-    
     _userDoc = userDoc;
-    _user = UserModel(id: userId, score: data);
+    _user = UserModel(id: userId, score: score);
   }
 
   incrementLocalUserScore() async {
