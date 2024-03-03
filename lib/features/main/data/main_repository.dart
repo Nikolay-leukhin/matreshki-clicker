@@ -18,7 +18,7 @@ class MainRepository {
       userId = 121321;
     }
 
-    _user = UserModel(id: userId, score: userId);
+    _user = UserModel(id: userId, score: 0);
   }
 
   incrementUserScore() async {

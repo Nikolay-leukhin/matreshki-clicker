@@ -15,6 +15,19 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late MainRepository mainRepository;
+  double k = 0;
+
+  _onTapUp() {
+    setState(() {
+      k = 0;
+    });
+  }
+
+  _onTapDown() {
+    setState(() {
+      k = 0.05;
+    });
+  }
 
   @override
   void initState() {
@@ -29,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
     return Container(
       decoration: const BoxDecoration(
           image: DecorationImage(
-              fit: BoxFit.cover, image: AssetImage("assets/images/bg.png"))),
+              fit: BoxFit.cover, image: AssetImage("assets/images/bg1.png"))),
       child: SafeArea(
           child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -47,8 +60,8 @@ class _MainScreenState extends State<MainScreen> {
                 children: [
                   Image.asset(
                     "assets/images/money.png",
-                    width: 60,
-                    height: 60,
+                    width: 75,
+                    height: 75,
                   ),
                   const SizedBox(
                     width: 9,
@@ -57,17 +70,28 @@ class _MainScreenState extends State<MainScreen> {
                     builder: (context, state) {
                       return Text(
                         mainRepository.user.score.toString(),
-                        style: AppFonts.font32w400,
+                        style: AppFonts.font40w400.copyWith(color: Colors.white),
                       );
                     },
                   ),
                 ],
               ),
+              const SizedBox(
+                height: 20,
+              ),
               GestureDetector(
-                onTap: () =>
-                    BlocProvider.of<MainCubit>(context).incrementScore(),
-                child: Ink(
+                onTapDown: (_) {
+                  _onTapDown();
+                  BlocProvider.of<MainCubit>(context).incrementScore();
+                },
+                onTapUp: (_) {
+                  _onTapUp();
+                },
+                child: AnimatedContainer(
+                  alignment: Alignment.center,
+                  duration: const Duration(milliseconds: 300),
                   height: size.height * 0.5,
+                  padding: EdgeInsets.all(size.height * k),
                   child: Image.asset(
                     "assets/images/japan.png",
                     fit: BoxFit.fitHeight,
@@ -110,7 +134,7 @@ class _MainScreenState extends State<MainScreen> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
                           color: Color(0xff8A0D06).withOpacity(0.7)),
-                      child: Row(
+                      child: const  Row(
                         children: [
                           NavButton(
                             path: 'assets/icons/fire.svg',
@@ -128,7 +152,20 @@ class _MainScreenState extends State<MainScreen> {
                     )
                   ],
                 ),
-              )
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(10)),
+                width: double.infinity,
+                height: 20,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
             ],
           ),
         ),
