@@ -28,7 +28,13 @@ class _MainScreenState extends State<MainScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Матрешки"),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.close))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                mainRepository.closeApp();
+              },
+              icon: const Icon(Icons.close))
+        ],
       ),
       body: Container(
         width: size.width,

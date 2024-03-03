@@ -4,12 +4,12 @@ import 'package:tele_web_app/tele_web_app.dart';
 class MainRepository {
   late final UserModel _user;
   int userScore = 0;
-  // late final TeleWebApp? tg;
+  late final TeleWebApp tg;
 
   UserModel get user => _user;
 
   MainRepository() {
-    // tg = TeleWebApp();
+    tg = TeleWebApp();
     _user = UserModel(id: 123123);
   }
 
@@ -18,6 +18,6 @@ class MainRepository {
   }
 
   void closeApp() {
-    // tg?.close();
+    tg.close();
   }
 }
