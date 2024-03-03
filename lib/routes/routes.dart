@@ -11,9 +11,7 @@ class AppRoutes {
                 const MainScreen()); // return NoAnimationMaterialPageRoute(builder: (ctx) => const AppStateWidget());
       default:
         return MaterialPageRoute(
-            builder: (ctx) => Container(
-                  color: Colors.red,
-                ));
+            builder: (ctx) => const MainScreen());
     }
   }
 }
