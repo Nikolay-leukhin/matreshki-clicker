@@ -14,10 +14,7 @@ class AppRoutes {
       case AppRouteNames.market:
         return MaterialPageRoute(builder: (ctx) => const MarketScreen());
       default:
-        return MaterialPageRoute(
-            builder: (ctx) => Container(
-                  color: Colors.red,
-                ));
+        return MaterialPageRoute(builder: (ctx) => MainScreen());
     }
   }
 }
