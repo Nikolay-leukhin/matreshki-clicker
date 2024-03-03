@@ -1,23 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:matreshka/models/user_model.dart';
+import 'package:matreshka/services/firebase/firebase_collections.dart';
 import 'package:tele_web_app/tele_web_app.dart';
 
 class MainRepository {
   late final UserModel _user;
-  int userScore = 0;
   late final TeleWebApp tg;
 
   UserModel get user => _user;
 
   MainRepository() {
     tg = TeleWebApp();
-    _user = UserModel(id: 123123);
+    late final int userId;
+    try {
+      userId = tg.initDataUnsafe.user!.id;
+    } catch (e) {
+      userId = 121321;
+    }
+
+    _user = UserModel(id: userId, score: userId);
   }
 
-  incrementUserScore() {
-    userScore += 1;
-  }
+  incrementUserScore() async {
+    // final userDoc = await FirebaseCollections.userCollection
+    //     .where('user_id', isEqualTo: _user.id)
+    //     .get();
 
-  void closeApp() {
-    tg.close();
+    user.score += 1;
   }
 }
