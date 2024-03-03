@@ -4,7 +4,7 @@ import 'package:tele_web_app/tele_web_app.dart';
 
 class MainRepository {
   late final UserModel _user;
-  late final TeleWebApp tg;
+  final TeleWebApp tg = TeleWebApp();
   late final _userDoc;
 
   UserModel get user => _user;
@@ -14,7 +14,6 @@ class MainRepository {
   }
 
   Future<void> initData() async {
-    tg = TeleWebApp();
     late final int userId;
     try {
       userId = tg.initDataUnsafe.user!.id;
