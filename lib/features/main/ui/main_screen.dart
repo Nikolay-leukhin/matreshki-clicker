@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
 import 'package:matreshka/features/main/logic/main/main_cubit.dart';
-import 'package:matreshka/routes/routes_names.dart';
 import 'package:matreshka/utils/fonts.dart';
 
 class MainScreen extends StatefulWidget {
@@ -25,8 +24,14 @@ class _MainScreenState extends State<MainScreen> {
 
   _onTapDown() {
     setState(() {
-      k = 0.05;
+      k = 0.02;
     });
+  }
+
+  @override
+  void dispose() {
+    mainRepository.updateData();
+    super.dispose();
   }
 
   @override
@@ -53,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Spacer(),
+              const Spacer(),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -70,7 +75,8 @@ class _MainScreenState extends State<MainScreen> {
                     builder: (context, state) {
                       return Text(
                         mainRepository.user.score.toString(),
-                        style: AppFonts.font40w400.copyWith(color: Colors.white),
+                        style:
+                            AppFonts.font40w400.copyWith(color: Colors.white),
                       );
                     },
                   ),
@@ -89,7 +95,7 @@ class _MainScreenState extends State<MainScreen> {
                 },
                 child: AnimatedContainer(
                   alignment: Alignment.center,
-                  duration: const Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 100),
                   height: size.height * 0.5,
                   padding: EdgeInsets.all(size.height * k),
                   child: Image.asset(
@@ -98,7 +104,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
@@ -134,7 +140,7 @@ class _MainScreenState extends State<MainScreen> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
                           color: Color(0xff8A0D06).withOpacity(0.7)),
-                      child: const  Row(
+                      child: const Row(
                         children: [
                           NavButton(
                             path: 'assets/icons/fire.svg',
