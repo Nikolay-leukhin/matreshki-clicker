@@ -33,8 +33,7 @@ class MainRepository {
 
   initTelegramActions() {
     tg.expand();
-    tg.onEvent(WebAppEventType.invoiceClosed, updateData);
-    tg.backButton.onClick(updateData);
+    tg.onEvent(WebAppEventType.viewportChanged, updateData);
   }
 
   updateData() async {

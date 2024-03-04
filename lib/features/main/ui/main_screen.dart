@@ -29,8 +29,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   @override
-  void dispose() {
-    mainRepository.updateData();
+  void dispose() async {
+    await mainRepository.updateData();
     super.dispose();
   }
 
