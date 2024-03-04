@@ -12,6 +12,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+
 
   tele_web_app:
     git: https://github.com/yeikel16/tele_web_app.git
@@ -25,6 +28,7 @@ dependencies:
   cloud_firestore: ^4.15.6
   google_fonts: ^5.1.0
   flutter_svg: ^2.0.10+1
+  easy_debounce: ^2.0.3
 
 dev_dependencies:
   flutter_test:

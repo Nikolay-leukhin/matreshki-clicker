@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:matreshka/models/user_model.dart';
 import 'package:matreshka/services/firebase/firebase_collections.dart';
 import 'package:tele_web_app/tele_web_app.dart';
@@ -29,11 +30,11 @@ class MainRepository {
 
   incrementLocalUserScore() async {
     user.score += 1;
+    EasyDebounce.debounce("increment", Duration(seconds: 2), updateData);
   }
 
   initTelegramActions() {
     tg.expand();
-    tg.onEvent(WebAppEventType.viewportChanged, updateData);
   }
 
   updateData() async {
