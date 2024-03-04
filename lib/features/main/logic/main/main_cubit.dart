@@ -11,7 +11,7 @@ class MainCubit extends Cubit<MainState> {
   MainCubit(this.mainRepository) : super(MainInitial());
 
   incrementScore() {
-    mainRepository.incrementLocalUserScore();
+    mainRepository.onTap();
     emit(ScoreUpdated());
   }
 }

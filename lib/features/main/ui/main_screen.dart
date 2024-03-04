@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
 import 'package:matreshka/features/main/logic/main/main_cubit.dart';
+import 'package:matreshka/models/market_model.dart';
 import 'package:matreshka/utils/fonts.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -47,7 +49,7 @@ class _MainScreenState extends State<MainScreen> {
     return Container(
       decoration: const BoxDecoration(
           image: DecorationImage(
-              fit: BoxFit.cover, image: AssetImage("assets/images/bg1.png"))),
+              fit: BoxFit.cover, image: AssetImage("assets/images/bg2.png"))),
       child: SafeArea(
           child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -122,12 +124,16 @@ class _MainScreenState extends State<MainScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              "6000",
-                              style: AppFonts.font29w400
-                                  .copyWith(color: Colors.white, height: 0),
+                            BlocBuilder<MainCubit, MainState>(
+                              builder: (context, state) {
+                                return Text(
+                                  mainRepository.user.currentEnergy.toString(),
+                                  style: AppFonts.font29w400
+                                      .copyWith(color: Colors.white, height: 0),
+                                );
+                              },
                             ),
-                            Text("/6000",
+                            Text("/${mainRepository.user.maxEnergy}",
                                 style: AppFonts.font13w400
                                     .copyWith(color: Colors.grey)),
                           ],
@@ -162,12 +168,26 @@ class _MainScreenState extends State<MainScreen> {
               const SizedBox(
                 height: 10,
               ),
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(10)),
-                width: double.infinity,
+              SizedBox(
                 height: 20,
+                child: BlocBuilder<MainCubit, MainState>(
+                  builder: (context, state) {
+                    return LinearPercentIndicator(
+                      width: size.width - 20,
+                      lineHeight: 14,
+                      percent: mainRepository.user.currentEnergy /
+                          mainRepository.user.maxEnergy,
+                      backgroundColor: Colors.white.withOpacity(0.4),
+                      linearGradient: const LinearGradient(
+                        colors: [Color(0xffff4b1f), Color(0xffff9068)],
+                        stops: [0, 1],
+                        begin: Alignment.centerRight,
+                        end: Alignment.centerLeft,
+                      ),
+                      barRadius: Radius.circular(20),
+                    );
+                  },
+                ),
               ),
               const SizedBox(
                 height: 10,

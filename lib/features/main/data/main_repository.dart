@@ -22,15 +22,14 @@ class MainRepository {
       userId = 1181861492;
     }
     final userDoc = FirebaseCollections.userCollection.doc(userId.toString());
-    final score = (await userDoc.get()).data()!['score'];
-
     _userDoc = userDoc;
-    _user = UserModel(id: userId, score: score);
+    _user = UserModel.fromJson((await userDoc.get()).data()!);
   }
 
-  incrementLocalUserScore() async {
-    user.score += 1;
-    EasyDebounce.debounce("increment", Duration(seconds: 2), updateData);
+  onTap() async {
+    user.score += user.scorePerClick;
+    user.currentEnergy -= user.scorePerClick;
+    EasyDebounce.debounce("increment", const Duration(seconds: 1), updateData);
   }
 
   initTelegramActions() {
@@ -38,6 +37,6 @@ class MainRepository {
   }
 
   updateData() async {
-    await _userDoc.update({"score": user.score});
+    await _userDoc.update({"score": user.score, "energy": user.currentEnergy});
   }
 }
