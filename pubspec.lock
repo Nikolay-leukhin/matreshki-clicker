@@ -192,6 +192,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_window_close:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: fca0419c78c7cb144eb52845ff4f0d8d9afd0f67
+      url: "https://github.com/zonble/flutter_window_close.git"
+    source: git
+    version: "1.0.0"
   google_fonts:
     dependency: "direct main"
     description:
@@ -373,6 +382,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sliver_tools:
+    dependency: "direct main"
+    description:
+      name: sliver_tools
+      sha256: eae28220badfb9d0559207badcbbc9ad5331aac829a88cb0964d330d2a4636a6
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.12"
   source_span:
     dependency: transitive
     description:

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
 import 'package:matreshka/features/main/logic/main/main_cubit.dart';
 import 'package:matreshka/models/market_model.dart';
+import 'package:matreshka/routes/routes_names.dart';
 import 'package:matreshka/utils/fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -146,11 +147,12 @@ class _MainScreenState extends State<MainScreen> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
                           color: Color(0xff8A0D06).withOpacity(0.7)),
-                      child: const Row(
+                      child:  Row(
                         children: [
                           NavButton(
                             path: 'assets/icons/fire.svg',
                             text: "boost",
+                            onTap: () {},
                           ),
                           const SizedBox(
                             width: 37,
@@ -158,6 +160,8 @@ class _MainScreenState extends State<MainScreen> {
                           NavButton(
                             path: 'assets/icons/bag.svg',
                             text: "shop",
+                            onTap: () => Navigator.pushNamed(
+                                context, AppRouteNames.market),
                           )
                         ],
                       ),
@@ -203,26 +207,27 @@ class _MainScreenState extends State<MainScreen> {
 class NavButton extends StatelessWidget {
   final String text;
   final String path;
+  final Function onTap;
 
-  const NavButton({
-    super.key,
-    required this.text,
-    required this.path,
-  });
+  const NavButton(
+      {super.key, required this.text, required this.path, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SvgPicture.asset(
-          path,
-          height: 40,
-        ),
-        Text(
-          text,
-          style: AppFonts.font11w400.copyWith(color: Colors.white),
-        ),
-      ],
+    return InkWell(
+      onTap: () => onTap(),
+      child: Column(
+        children: [
+          SvgPicture.asset(
+            path,
+            height: 40,
+          ),
+          Text(
+            text,
+            style: AppFonts.font11w400.copyWith(color: Colors.white),
+          ),
+        ],
+      ),
     );
   }
 }

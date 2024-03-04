@@ -18,6 +18,9 @@ dependencies:
 
   tele_web_app:
     git: https://github.com/yeikel16/tele_web_app.git
+  
+  flutter_window_close:
+    git: https://github.com/zonble/flutter_window_close.git
 
 
   cupertino_icons: ^1.0.2
@@ -30,6 +33,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   easy_debounce: ^2.0.3
   percent_indicator: ^4.2.3
+  sliver_tools: ^0.2.12
 
 dev_dependencies:
   flutter_test:
