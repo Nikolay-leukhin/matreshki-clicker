@@ -24,9 +24,9 @@ class _MarketScreenState extends State<MarketScreen> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: Scrollbar(
-            child: SingleChildScrollView(
-              child: Container(
+          body: SingleChildScrollView(
+            child: RepaintBoundary(
+              child: SizedBox(
                 width: size.width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,8 +60,8 @@ class _MarketScreenState extends State<MarketScreen> {
                         ),
                         Text(
                           "SHOP",
-                          style:
-                              AppFonts.font29w400.copyWith(color: Colors.white),
+                          style: AppFonts.font29w400
+                              .copyWith(color: Colors.white),
                         )
                       ],
                     ),
