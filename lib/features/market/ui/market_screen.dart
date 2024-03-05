@@ -47,7 +47,6 @@ class _MarketScreenState extends State<MarketScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: size.height * 0.1),
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
