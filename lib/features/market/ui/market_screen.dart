@@ -23,68 +23,63 @@ class _MarketScreenState extends State<MarketScreen> {
       decoration: const BoxDecoration(
           image: DecorationImage(
               fit: BoxFit.cover, image: AssetImage("assets/images/bg2.png"))),
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SizedBox(
-            width: size.width,
-            child: NativeScrollBuilder(
-              builder: (BuildContext context, ScrollController controller) {
-                return ListView(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Row(
-                        children: [
-                          InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Icon(
-                                Icons.arrow_back_ios_new,
-                                color: Colors.white,
-                              )),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: size.height * 0.1),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SingleChildScrollView(
+          child: SizedBox(
+              width: size.width,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
                       children: [
-                        SvgPicture.asset(
-                          "assets/icons/bag.svg",
-                          width: 100,
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          "SHOP",
-                          style:
-                              AppFonts.font29w400.copyWith(color: Colors.white),
-                        )
+                        InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Icon(
+                              Icons.arrow_back_ios_new,
+                              color: Colors.white,
+                            )),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        "Skins",
-                        style: AppFonts.font20w400.copyWith(),
+                  ),
+                  SizedBox(height: size.height * 0.1),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/bag.svg",
+                        width: 100,
                       ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        "SHOP",
+                        style:
+                            AppFonts.font29w400.copyWith(color: Colors.white),
+                      )
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      "Skins",
+                      style: AppFonts.font20w400.copyWith(),
                     ),
-                    SizedBox(height: 40),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [1, 2, 3, 2, 3, 2, 3, 2, 3]
-                            .map((e) =>
-                                RepaintBoundary(child: MarketPromoCard()))
-                            .toList()),
-                  ],
-                );
-              },
-            ),
-          ),
+                  ),
+                  const SizedBox(height: 40),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [1, 2, 3, 2, 3, 2, 3, 2, 3]
+                          .map((e) =>
+                              const RepaintBoundary(child: MarketPromoCard()))
+                          .toList()),
+                ],
+              )),
         ),
       ),
     );
