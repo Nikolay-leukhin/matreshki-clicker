@@ -13,6 +13,8 @@ class MarketScreen extends StatefulWidget {
 }
 
 class _MarketScreenState extends State<MarketScreen> {
+  final controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
@@ -24,61 +26,69 @@ class _MarketScreenState extends State<MarketScreen> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
-            child: RepaintBoundary(
+          body: Scrollbar(
+            showTrackOnHover: false,
+            controller: controller,
+            interactive: true,
+            thickness: 10,
+            child: SingleChildScrollView(
+              controller: controller,
               child: SizedBox(
                 width: size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Row(
+                child: RepaintBoundary(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Row(
+                          children: [
+                            InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Icon(
+                                  Icons.arrow_back_ios_new,
+                                  color: Colors.white,
+                                )),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: size.height * 0.1),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Icon(
-                                Icons.arrow_back_ios_new,
-                                color: Colors.white,
-                              )),
+                          SvgPicture.asset(
+                            "assets/icons/bag.svg",
+                            width: 100,
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            "SHOP",
+                            style:
+                                AppFonts.font29w400.copyWith(color: Colors.white),
+                          )
                         ],
                       ),
-                    ),
-                    SizedBox(height: size.height * 0.1),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icons/bag.svg",
-                          width: 100,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          "Skins",
+                          style: AppFonts.font20w400.copyWith(),
                         ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          "SHOP",
-                          style: AppFonts.font29w400
-                              .copyWith(color: Colors.white),
-                        )
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        "Skins",
-                        style: AppFonts.font20w400.copyWith(),
                       ),
-                    ),
-                    SizedBox(height: 40),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [1, 2, 3, 2, 3, 2, 3, 2, 3]
-                            .map((e) => MarketPromoCard())
-                            .toList()),
-                  ],
+                      SizedBox(height: 40),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [1, 2, 3, 2, 3, 2, 3, 2, 3]
+                              .map((e) =>
+                                  RepaintBoundary(child: MarketPromoCard()))
+                              .toList()),
+                    ],
+                  ),
                 ),
               ),
             ),
