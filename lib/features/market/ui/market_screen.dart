@@ -66,18 +66,26 @@ class _MarketScreenState extends State<MarketScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(
-                      "Skins",
-                      style: AppFonts.font20w400.copyWith(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Skins",
+                          style: AppFonts.font20w400.copyWith(),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 40),
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [1, 2, 3, 2, 3, 2, 3, 2, 3]
-                          .map((e) =>
-                              const RepaintBoundary(child: MarketPromoCard()))
-                          .toList()),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    height: 109,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                        children: [1, 2, 3, 2, 3, 2, 3, 2, 3]
+                            .map((e) =>
+                                const RepaintBoundary(child: MarketPromoCard()))
+                            .toList()),
+                  ),
                 ],
               )),
         ),
@@ -95,8 +103,94 @@ class MarketPromoCard extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.only(left: 10),
       height: 93,
       width: size.width - 20,
+      clipBehavior: Clip.hardEdge,
+      decoration: const BoxDecoration(color: Colors.transparent),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+            height: 93,
+            width: size.width - 20,
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            alignment: Alignment.center,
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+                color: AppColors.cD9D9D9.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(16)),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 67,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Colors.white.withOpacity(0.4)),
+                  padding: const EdgeInsets.all(10),
+                  child: const Icon(
+                    Icons.free_breakfast_outlined,
+                    size: 40,
+                    color: AppColors.c322A2A,
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                SizedBox(
+                  width: size.width * 0.46,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Promo name",
+                          overflow: TextOverflow.ellipsis,
+                          style: AppFonts.font20w400.copyWith(
+                              color: AppColors.c322A2A,
+                              fontWeight: FontWeight.bold)),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          Image.asset(
+                            'assets/images/coin.png',
+                            width: 27,
+                            fit: BoxFit.fitWidth,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            "99999",
+                            overflow: TextOverflow.ellipsis,
+                            style: AppFonts.font15w400
+                                .copyWith(color: AppColors.c322A2A),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ],
+            )),
+      ),
+    );
+  }
+}
+
+class MarketMatreshkaCard extends StatelessWidget {
+  const MarketMatreshkaCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      height: size.width * 0.61,
+      width: size.width * 0.61,
       clipBehavior: Clip.hardEdge,
       decoration: const BoxDecoration(color: Colors.transparent),
       child: BackdropFilter(
@@ -190,39 +284,5 @@ class MarketWrapper extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
       ),
     );
-  }
-}
-
-class NativeScrollBuilder extends StatefulWidget {
-  final Widget Function(BuildContext context, ScrollController controller)
-      builder;
-
-  const NativeScrollBuilder({
-    Key? key,
-    required this.builder,
-  }) : super(key: key);
-
-  @override
-  _NativeScrollBuilderState createState() => _NativeScrollBuilderState();
-}
-
-class _NativeScrollBuilderState extends State<NativeScrollBuilder> {
-  late ScrollController _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return widget.builder(context, _scrollController);
   }
 }
