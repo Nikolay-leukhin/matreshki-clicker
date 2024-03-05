@@ -22,6 +22,9 @@ class AppFonts {
   static final font20w400 =
       ru.copyWith(fontSize: 20, fontWeight: FontWeight.w400);
 
+  static final font18w400 =
+      ru.copyWith(fontSize: 18, fontWeight: FontWeight.w400);
+
   static final font13w400 =
       ru.copyWith(fontSize: 13, fontWeight: FontWeight.w400);
 }
