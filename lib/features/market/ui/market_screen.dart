@@ -28,57 +28,61 @@ class _MarketScreenState extends State<MarketScreen> {
           backgroundColor: Colors.transparent,
           body: SizedBox(
             width: size.width,
-            child: ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    children: [
-                      InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(
-                            Icons.arrow_back_ios_new,
-                            color: Colors.white,
-                          )),
-                    ],
-                  ),
-                ),
-                SizedBox(height: size.height * 0.1),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+            child: NativeScrollBuilder(
+              builder: (BuildContext context, ScrollController controller) {
+                return ListView(
                   children: [
-                    SvgPicture.asset(
-                      "assets/icons/bag.svg",
-                      width: 100,
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                Icons.arrow_back_ios_new,
+                                color: Colors.white,
+                              )),
+                        ],
+                      ),
                     ),
-                    const SizedBox(
-                      height: 8,
+                    SizedBox(height: size.height * 0.1),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/icons/bag.svg",
+                          width: 100,
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          "SHOP",
+                          style:
+                              AppFonts.font29w400.copyWith(color: Colors.white),
+                        )
+                      ],
                     ),
-                    Text(
-                      "SHOP",
-                      style:
-                          AppFonts.font29w400.copyWith(color: Colors.white),
-                    )
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        "Skins",
+                        style: AppFonts.font20w400.copyWith(),
+                      ),
+                    ),
+                    SizedBox(height: 40),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [1, 2, 3, 2, 3, 2, 3, 2, 3]
+                            .map((e) =>
+                                RepaintBoundary(child: MarketPromoCard()))
+                            .toList()),
                   ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    "Skins",
-                    style: AppFonts.font20w400.copyWith(),
-                  ),
-                ),
-                SizedBox(height: 40),
-                Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [1, 2, 3, 2, 3, 2, 3, 2, 3]
-                        .map((e) =>
-                            RepaintBoundary(child: MarketPromoCard()))
-                        .toList()),
-              ],
+                );
+              },
             ),
           ),
         ),
@@ -191,5 +195,39 @@ class MarketWrapper extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
       ),
     );
+  }
+}
+
+class NativeScrollBuilder extends StatefulWidget {
+  final Widget Function(BuildContext context, ScrollController controller)
+      builder;
+
+  const NativeScrollBuilder({
+    Key? key,
+    required this.builder,
+  }) : super(key: key);
+
+  @override
+  _NativeScrollBuilderState createState() => _NativeScrollBuilderState();
+}
+
+class _NativeScrollBuilderState extends State<NativeScrollBuilder> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.builder(context, _scrollController);
   }
 }
