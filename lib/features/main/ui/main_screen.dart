@@ -174,7 +174,8 @@ class _MainScreenState extends State<MainScreen> {
                               NavButton(
                                 path: 'assets/icons/fire.svg',
                                 text: "boost",
-                                onTap: () {},
+                                onTap: () => Navigator.pushNamed(
+                                context, AppRouteNames.boosts),
                               ),
                               const SizedBox(
                                 width: 37,

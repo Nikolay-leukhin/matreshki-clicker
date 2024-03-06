@@ -27,8 +27,6 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> json, List<SkinModel> skins) {
     var times = (json['create_at'].millisecondsSinceEpoch) / 1000;
 
-    print(((DateTime.now().millisecondsSinceEpoch / 1000 - times) / 2));
-
     return UserModel(
       id: json['user_id'] as int,
       maxEnergy: (json['max_energy'] ?? 1000) as int,

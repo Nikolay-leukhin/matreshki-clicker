@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppFonts {
-  static final ru = GoogleFonts.silkscreen(
+  static final ru = GoogleFonts.alexandria(
     color: Colors.white
   );
 
@@ -15,7 +15,6 @@ class AppFonts {
     static final font15w400 =
       ru.copyWith(fontSize: 15, fontWeight: FontWeight.w400);
 
-
   static final font29w400 =
       ru.copyWith(fontSize: 29, fontWeight: FontWeight.w400);
 
@@ -26,5 +25,5 @@ class AppFonts {
       ru.copyWith(fontSize: 18, fontWeight: FontWeight.w400);
 
   static final font13w400 =
-      ru.copyWith(fontSize: 13, fontWeight: FontWeight.w400);
+      ru.copyWith(fontSize: 13, fontWeight: FontWeight.w300);
 }
