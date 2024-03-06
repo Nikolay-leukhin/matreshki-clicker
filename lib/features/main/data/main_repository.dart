@@ -31,9 +31,11 @@ class MainRepository {
   }
 
   onTap() async {
-    user.score += user.scorePerClick;
-    user.currentEnergy -= user.scorePerClick;
-    EasyDebounce.debounce("increment", const Duration(seconds: 1), updateData);
+    if(user.currentEnergy - 1 >= 0) {
+      user.score += user.scorePerClick;
+      user.currentEnergy -= user.currentEnergy - 1 < 0 ? 0 : 1;
+      EasyDebounce.debounce("increment", const Duration(seconds: 1), updateData);
+    }
   }
 
   onTimePicker() async {
@@ -46,6 +48,6 @@ class MainRepository {
   }
 
   updateData() async {
-    await _userDoc.update({"score": user.score, "energy": user.currentEnergy});
+    await _userDoc.update({"score": user.score, "energy": user.currentEnergy, "create_at": user.getToCDate()});
   }
 }

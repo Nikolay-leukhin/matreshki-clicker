@@ -160,7 +160,7 @@ class _MainScreenState extends State<MainScreen> {
                           horizontal: 15, vertical: 7),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
-                          color: Color(0xff8A0D06).withOpacity(0.7)),
+                          color: const Color(0xff8A0D06).withOpacity(0.7)),
                       child: Row(
                         children: [
                           NavButton(
@@ -202,7 +202,7 @@ class _MainScreenState extends State<MainScreen> {
                         begin: Alignment.centerRight,
                         end: Alignment.centerLeft,
                       ),
-                      barRadius: Radius.circular(20),
+                      barRadius: const Radius.circular(20),
                     );
                   },
                 ),
