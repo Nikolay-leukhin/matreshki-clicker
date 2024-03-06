@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
 import 'package:matreshka/features/main/logic/main/main_cubit.dart';
-import 'package:matreshka/models/market_model.dart';
 import 'package:matreshka/routes/routes_names.dart';
 import 'package:matreshka/utils/fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -17,17 +18,17 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late MainRepository mainRepository;
-  double k = 0;
+  double matreshka_size = 0;
 
   _onTapUp() {
     setState(() {
-      k = 0;
+      matreshka_size = 0;
     });
   }
 
   _onTapDown() {
     setState(() {
-      k = 0.02;
+      matreshka_size = 0.02;
     });
   }
 
@@ -37,9 +38,22 @@ class _MainScreenState extends State<MainScreen> {
     super.dispose();
   }
 
+  Timer? _timer;
+
   @override
   void initState() {
     mainRepository = RepositoryProvider.of<MainRepository>(context);
+
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if(timer.tick % 2 == 0) {
+          BlocProvider.of<MainCubit>(context).incrementBar();
+        }
+      },
+    );
+
     super.initState();
   }
 
@@ -100,7 +114,7 @@ class _MainScreenState extends State<MainScreen> {
                   alignment: Alignment.center,
                   duration: const Duration(milliseconds: 100),
                   height: size.height * 0.5,
-                  padding: EdgeInsets.all(size.height * k),
+                  padding: EdgeInsets.all(size.height * matreshka_size),
                   child: Image.asset(
                     "assets/images/japan.png",
                     fit: BoxFit.fitHeight,
@@ -147,7 +161,7 @@ class _MainScreenState extends State<MainScreen> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
                           color: Color(0xff8A0D06).withOpacity(0.7)),
-                      child:  Row(
+                      child: Row(
                         children: [
                           NavButton(
                             path: 'assets/icons/fire.svg',

@@ -14,4 +14,9 @@ class MainCubit extends Cubit<MainState> {
     mainRepository.onTap();
     emit(ScoreUpdated());
   }
+
+  incrementBar() {
+    mainRepository.onTimePicker();
+    emit(ScoreUpdated());
+  }
 }
