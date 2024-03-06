@@ -39,8 +39,11 @@ class MainRepository {
   }
 
   onTimePicker() async {
-    user.currentEnergy += user.currentEnergy == user.maxEnergy ? 0 : 1;
-    EasyDebounce.debounce("increment", const Duration(seconds: 1), updateData);
+    if(user.currentEnergy < user.maxEnergy) {
+      user.currentEnergy += user.currentEnergy == user.maxEnergy ? 0 : 1;
+      EasyDebounce.debounce(
+          "increment", const Duration(seconds: 1), updateData);
+    }
   }
 
   initTelegramActions() {
@@ -48,6 +51,6 @@ class MainRepository {
   }
 
   updateData() async {
-    await _userDoc.update({"score": user.score, "energy": user.currentEnergy, "create_at": user.getToCDate()});
+    await _userDoc.update({"score": user.score, "energy": user.currentEnergy, "create_at": Timestamp.now()});
   }
 }
