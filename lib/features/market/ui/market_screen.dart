@@ -162,24 +162,3 @@ class _MarketScreenState extends State<MarketScreen> {
   }
 }
 
-class MarketWrapper extends StatelessWidget {
-  const MarketWrapper({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      clipBehavior: Clip.hardEdge,
-      width: size.width * 0.61,
-      height: size.width * 0.61,
-      decoration: BoxDecoration(
-          color: AppColors.cD9D9D9.withOpacity(0.4),
-          borderRadius: BorderRadius.circular(16)),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-      ),
-    );
-  }
-}

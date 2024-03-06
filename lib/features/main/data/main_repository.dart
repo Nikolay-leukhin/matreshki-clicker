@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:matreshka/models/market_model.dart';
+import 'package:matreshka/models/skin_model.dart';
 import 'package:matreshka/models/user_model.dart';
 import 'package:matreshka/services/firebase/firebase_collections.dart';
 import 'package:tele_web_app/tele_web_app.dart';
@@ -27,19 +29,33 @@ class MainRepository {
 
     final res = (await userDoc.get()).data();
 
-    _user = UserModel.fromJson(res!);
+    _user = UserModel.fromJson(res!, await loadUserSkins(res['user_skins']));
+  }
+
+  Future<List<SkinModel>> loadUserSkins(List<dynamic> dollsId) async {
+    List<SkinModel> skins = [];
+    print(dollsId);
+    for (var id in dollsId) {
+      final doc = FirebaseCollections.skinsCollection.doc(id);
+      final dollData = await doc.get();
+      print("hi");
+      skins.add(SkinModel.fromJson(dollData.data()!, id));
+    }
+
+    return skins;
   }
 
   onTap() async {
-    if(user.currentEnergy - user.scorePerClick >= 0) {
+    if (user.currentEnergy - user.scorePerClick >= 0) {
       user.score += user.scorePerClick;
       user.currentEnergy -= user.currentEnergy - 1 < 0 ? 0 : 1;
-      EasyDebounce.debounce("increment", const Duration(seconds: 1), updateData);
+      EasyDebounce.debounce(
+          "increment", const Duration(seconds: 1), updateData);
     }
   }
 
   onTimePicker() async {
-    if(user.currentEnergy < user.maxEnergy) {
+    if (user.currentEnergy < user.maxEnergy) {
       user.currentEnergy += user.currentEnergy == user.maxEnergy ? 0 : 1;
       EasyDebounce.debounce(
           "increment", const Duration(microseconds: 1), updateData);
@@ -51,6 +67,10 @@ class MainRepository {
   }
 
   updateData() async {
-    await _userDoc.update({"score": user.score, "energy": user.currentEnergy, "create_at": Timestamp.now()});
+    await _userDoc.update({
+      "score": user.score,
+      "energy": user.currentEnergy,
+      "create_at": Timestamp.now()
+    });
   }
 }
