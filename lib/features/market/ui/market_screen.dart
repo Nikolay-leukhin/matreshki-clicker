@@ -3,7 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:matreshka/features/market/data/market_repository.dart';
 import 'package:matreshka/features/market/logic/cubit/market_cubit.dart';
+import 'package:matreshka/models/market_model.dart';
 import 'package:matreshka/utils/colors.dart';
 import 'package:matreshka/utils/fonts.dart';
 
@@ -18,6 +20,14 @@ class _MarketScreenState extends State<MarketScreen> {
   final controller = ScrollController();
   final pageScrollController1 = PageController(viewportFraction: 0.9);
   final pageScrollController2 = PageController(viewportFraction: 0.9);
+  late final MarketRepository marketRepository;
+
+  @override
+  void initState() {
+    marketRepository = RepositoryProvider.of<MarketRepository>(context);
+    context.read<MarketCubit>().loadMarketItems();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +102,11 @@ class _MarketScreenState extends State<MarketScreen> {
                           return PageView(
                               controller: pageScrollController1,
                               scrollDirection: Axis.horizontal,
-                              children: [1, 2, 3, 2, 3, 2, 3, 2, 3]
-                                  .map((e) => const RepaintBoundary(
-                                      child: MarketPromoCard()))
+                              children: marketRepository.promoItems
+                                  .map((model) => RepaintBoundary(
+                                          child: MarketPromoCard(
+                                        promo: model,
+                                      )))
                                   .toList());
                         }
                         return Text("fail to load");
@@ -118,7 +130,7 @@ class _MarketScreenState extends State<MarketScreen> {
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
-                    height: size.width * 0.85,
+                    height: size.height * 0.5,
                     child: BlocBuilder<MarketCubit, MarketState>(
                       builder: (context, state) {
                         if (state is MarketLoading) {
@@ -129,9 +141,11 @@ class _MarketScreenState extends State<MarketScreen> {
                           return PageView(
                               scrollDirection: Axis.horizontal,
                               controller: pageScrollController2,
-                              children: [1, 2, 3, 2, 3, 2, 3, 2, 3]
-                                  .map((e) => const RepaintBoundary(
-                                      child: MarketMatreshkaCard()))
+                              children: marketRepository.skinsList
+                                  .map((model) => RepaintBoundary(
+                                          child: MarketMatreshkaCard(
+                                        skin: model,
+                                      )))
                                   .toList());
                         }
                         return Text("fail to load");
@@ -147,7 +161,9 @@ class _MarketScreenState extends State<MarketScreen> {
 }
 
 class MarketPromoCard extends StatelessWidget {
-  const MarketPromoCard({super.key});
+  final MarketPromoModel promo;
+
+  const MarketPromoCard({super.key, required this.promo});
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +214,7 @@ class MarketPromoCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Promo name",
+                        Text(promo.name,
                             overflow: TextOverflow.ellipsis,
                             style: AppFonts.font20w400.copyWith(
                                 color: AppColors.c322A2A,
@@ -217,7 +233,7 @@ class MarketPromoCard extends StatelessWidget {
                               width: 5,
                             ),
                             Text(
-                              "99999",
+                              promo.price.toString(),
                               overflow: TextOverflow.ellipsis,
                               style: AppFonts.font15w400
                                   .copyWith(color: AppColors.c322A2A),
@@ -236,7 +252,9 @@ class MarketPromoCard extends StatelessWidget {
 }
 
 class MarketMatreshkaCard extends StatelessWidget {
-  const MarketMatreshkaCard({super.key});
+  final MarketSkinModel skin;
+
+  const MarketMatreshkaCard({super.key, required this.skin});
 
   @override
   Widget build(BuildContext context) {
@@ -273,7 +291,7 @@ class MarketMatreshkaCard extends StatelessWidget {
                       SizedBox(
                         width: size.width * 0.46,
                         child: Image.asset(
-                          'assets/images/japan.png',
+                          skin.iconPath,
                           height: size.width * 0.55,
                           fit: BoxFit.fitHeight,
                         ),
@@ -281,7 +299,7 @@ class MarketMatreshkaCard extends StatelessWidget {
                       Column(
                         children: [
                           Image.asset(
-                            'assets/images/coin.png',
+                            skin.coinIconPath,
                             height: 50,
                             fit: BoxFit.fitHeight,
                           ),
@@ -318,7 +336,7 @@ class MarketMatreshkaCard extends StatelessWidget {
                           width: 10,
                         ),
                         Text(
-                          '670',
+                          skin.price.toString(),
                           style: AppFonts.font18w400
                               .copyWith(color: AppColors.c322A2A),
                         )
