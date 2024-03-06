@@ -1,7 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:matreshka/features/market/logic/cubit/market_cubit.dart';
 import 'package:matreshka/utils/colors.dart';
 import 'package:matreshka/utils/fonts.dart';
 
@@ -80,13 +82,24 @@ class _MarketScreenState extends State<MarketScreen> {
                   const SizedBox(height: 10),
                   SizedBox(
                     height: 109,
-                    child: PageView(
-                      controller: pageScrollController1,
-                        scrollDirection: Axis.horizontal,
-                        children: [1, 2, 3, 2, 3, 2, 3, 2, 3]
-                            .map((e) =>
-                                const RepaintBoundary(child: MarketPromoCard()))
-                            .toList()),
+                    child: BlocBuilder<MarketCubit, MarketState>(
+                      builder: (context, state) {
+                        if (state is MarketLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          );
+                        } else if (state is MarketSuccess) {
+                          return PageView(
+                              controller: pageScrollController1,
+                              scrollDirection: Axis.horizontal,
+                              children: [1, 2, 3, 2, 3, 2, 3, 2, 3]
+                                  .map((e) => const RepaintBoundary(
+                                      child: MarketPromoCard()))
+                                  .toList());
+                        }
+                        return Text("fail to load");
+                      },
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
@@ -106,13 +119,24 @@ class _MarketScreenState extends State<MarketScreen> {
                   const SizedBox(height: 10),
                   SizedBox(
                     height: size.width * 0.85,
-                    child: PageView(
-                        scrollDirection: Axis.horizontal,
-                        controller: pageScrollController2,
-                        children: [1, 2, 3, 2, 3, 2, 3, 2, 3]
-                            .map((e) => const RepaintBoundary(
-                                child: MarketMatreshkaCard()))
-                            .toList()),
+                    child: BlocBuilder<MarketCubit, MarketState>(
+                      builder: (context, state) {
+                        if (state is MarketLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          );
+                        } else if (state is MarketSuccess) {
+                          return PageView(
+                              scrollDirection: Axis.horizontal,
+                              controller: pageScrollController2,
+                              children: [1, 2, 3, 2, 3, 2, 3, 2, 3]
+                                  .map((e) => const RepaintBoundary(
+                                      child: MarketMatreshkaCard()))
+                                  .toList());
+                        }
+                        return Text("fail to load");
+                      },
+                    ),
                   ),
                 ],
               )),
@@ -261,14 +285,19 @@ class MarketMatreshkaCard extends StatelessWidget {
                             height: 50,
                             fit: BoxFit.fitHeight,
                           ),
-                          Text('Emerald', style: AppFonts.font20w400
-                              .copyWith(color: AppColors.c322A2A))
+                          Text('Emerald',
+                              style: AppFonts.font20w400
+                                  .copyWith(color: AppColors.c322A2A))
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 15,),
-                  const Divider(height: 2,),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  const Divider(
+                    height: 2,
+                  ),
                   const Spacer(),
                   Container(
                     height: 52,
@@ -285,8 +314,14 @@ class MarketMatreshkaCard extends StatelessWidget {
                           height: 30,
                           fit: BoxFit.fitHeight,
                         ),
-                        SizedBox(width: 10,),
-                        Text('670', style: AppFonts.font18w400.copyWith(color: AppColors.c322A2A),)
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          '670',
+                          style: AppFonts.font18w400
+                              .copyWith(color: AppColors.c322A2A),
+                        )
                       ],
                     ),
                   ),

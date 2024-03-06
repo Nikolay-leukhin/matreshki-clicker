@@ -2,9 +2,13 @@ abstract class MarketItemModel {
   final String name;
   final int price;
   final String description;
+  final String id;
 
   MarketItemModel(
-      {required this.name, required this.price, required this.description});
+      {required this.name,
+      required this.price,
+      required this.description,
+      required this.id});
 }
 
 class MarketSkinModel extends MarketItemModel {
@@ -14,15 +18,16 @@ class MarketSkinModel extends MarketItemModel {
       {required super.name,
       required super.price,
       required super.description,
-      required this.iconPath});
+      required this.iconPath,
+      required super.id});
 
   factory MarketSkinModel.fromJson(Map<String, dynamic> json) {
     return MarketSkinModel(
-      name: json['name'],
-      price: json['price'],
-      description: json['description'],
-      iconPath: json['iconPath'],
-    );
+        name: json['name'],
+        price: json['price'],
+        description: json['description'],
+        iconPath: json['iconPath'],
+        id: json['id']);
   }
 }
 
@@ -33,14 +38,15 @@ class MarketPromoModel extends MarketItemModel {
       {required super.name,
       required super.price,
       required super.description,
-      required this.promocode});
+      required this.promocode,
+      required super.id});
 
   factory MarketPromoModel.fromJson(Map<String, dynamic> json) {
     return MarketPromoModel(
-      name: json['name'],
-      price: json['price'],
-      description: json['description'],
-      promocode: json['promocode'],
-    );
+        name: json['name'],
+        price: json['price'],
+        description: json['description'],
+        promocode: json['promocode'],
+        id: json['id']);
   }
 }
