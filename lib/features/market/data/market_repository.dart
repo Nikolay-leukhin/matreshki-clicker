@@ -1,20 +1,32 @@
+import 'dart:developer';
+
 import 'package:matreshka/models/market_model.dart';
 import 'package:matreshka/services/firebase/firebase_collections.dart';
 
 class MarketRepository {
-  List<dynamic> marketItems = [];
+  List<MarketPromoModel> promoItems = [];
+  List<MarketSkinModel> skinsList = [];
 
   void buyItem() {}
 
-  void loadMarketItems() async {
-    final data = await FirebaseCollections.marketCollection.get();
-
+  Future<void> loadMarketPromocodes() async {
+    final data = await FirebaseCollections.promoCollection.get();
     data.docs.forEach((doc) {
-      final map = doc.data();
-      if (map.keys.contains('promocode')) {
-        marketItems.add(MarketPromoModel.fromJson(map));
-      } else {
-        marketItems.add(MarketSkinModel.fromJson(map));
+      try {
+        promoItems.add(MarketPromoModel.fromJson(doc.data()));
+      } catch (e) {
+        log("fail to parse promocode");
+      }
+    });
+  }
+
+  Future<void> loadMarketSkins() async {
+    final data = await FirebaseCollections.marketCollection.get();
+    data.docs.forEach((doc) {
+      try {
+        skinsList.add(MarketSkinModel.fromJson(doc.data()));
+      } catch (e) {
+        log("fail to parse skin");
       }
     });
   }
