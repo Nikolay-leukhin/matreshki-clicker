@@ -18,21 +18,24 @@ class UserModel {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    var times = (json['create_at'].millisecondsSinceEpoch as int) * 500;
+    var times = (json['create_at'].millisecondsSinceEpoch) / 1000;
+
+    print(((DateTime.now().millisecondsSinceEpoch / 1000 -
+        times) / 2));
 
     return UserModel(
       id: json['user_id'] as int,
       maxEnergy: (json['max_energy'] ?? 1000) as int,
       scorePerClick: (json['score_per_click'] ?? 1) as int,
       time: json['create_at'],
-      currentEnergy: (json['energy'] as int) +
-          (DateTime.now().millisecondsSinceEpoch * 500 -
-                  times) / 2 >
+      currentEnergy: ((json['energy'] as int) +
+          (DateTime.now().millisecondsSinceEpoch / 1000 -
+                  times) / 2) >
               1000
           ? 1000
           : (json['energy'] as int) +
-          ((DateTime.now().millisecondsSinceEpoch * 500 -
-              times) / 2) as int,
+          (DateTime.now().millisecondsSinceEpoch / 1000 -
+              times) ~/ 2,
       score: (json['score'] as int),
     );
   }

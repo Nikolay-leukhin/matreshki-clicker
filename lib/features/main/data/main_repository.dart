@@ -31,7 +31,7 @@ class MainRepository {
   }
 
   onTap() async {
-    if(user.currentEnergy - 1 >= 0) {
+    if(user.currentEnergy - user.scorePerClick >= 0) {
       user.score += user.scorePerClick;
       user.currentEnergy -= user.currentEnergy - 1 < 0 ? 0 : 1;
       EasyDebounce.debounce("increment", const Duration(seconds: 1), updateData);
@@ -42,7 +42,7 @@ class MainRepository {
     if(user.currentEnergy < user.maxEnergy) {
       user.currentEnergy += user.currentEnergy == user.maxEnergy ? 0 : 1;
       EasyDebounce.debounce(
-          "increment", const Duration(seconds: 1), updateData);
+          "increment", const Duration(microseconds: 1), updateData);
     }
   }
 
