@@ -175,7 +175,7 @@ class _MainScreenState extends State<MainScreen> {
                                 path: 'assets/icons/fire.svg',
                                 text: "boost",
                                 onTap: () => Navigator.pushNamed(
-                                context, AppRouteNames.boosts),
+                                    context, AppRouteNames.boosts),
                               ),
                               const SizedBox(
                                 width: 37,
@@ -226,13 +226,15 @@ class _MainScreenState extends State<MainScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRouteNames.inventory);
+                  },
                   child: Container(
                     margin: const EdgeInsets.all(15),
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Color(0xff430505)
-                    ),
+                        borderRadius: BorderRadius.circular(20),
+                        color: Color(0xff430505)),
                     child: SvgPicture.asset(
                       "assets/icons/inventory.svg",
                       width: 40,
