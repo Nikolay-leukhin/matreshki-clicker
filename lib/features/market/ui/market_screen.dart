@@ -7,8 +7,6 @@ import 'package:matreshka/features/market/data/market_repository.dart';
 import 'package:matreshka/features/market/logic/cubit/market_cubit.dart';
 import 'package:matreshka/features/market/ui/market_doll_card.dart';
 import 'package:matreshka/features/market/ui/market_promo_card.dart';
-import 'package:matreshka/models/market_model.dart';
-import 'package:matreshka/utils/colors.dart';
 import 'package:matreshka/utils/fonts.dart';
 
 class MarketScreen extends StatefulWidget {

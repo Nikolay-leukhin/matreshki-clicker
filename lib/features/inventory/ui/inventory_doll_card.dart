@@ -80,37 +80,34 @@ class _InventoryMatreshkaCardState extends State<InventoryMatreshkaCard> {
                     height: 2,
                   ),
                   const Spacer(),
-                  Container(
-                    height: 52,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: Colors.white.withOpacity(0.4)),
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        BlocBuilder<ChooseDollCubit, ChooseDollState>(
-                          builder: (context, state) {
-                            if (state is ChooseDollLoading) {
-                              return const Center(
-                                child: CircularProgressIndicator.adaptive(),
-                              );
-                            }
+                  InkWell(
+                    onTap: () {
+                      if (context.read<MainRepository>().user.activeSckinId !=
+                          widget.skin.id) {
+                        context
+                            .read<ChooseDollCubit>()
+                            .changeDoll(widget.skin.id);
+                      }
+                    },
+                    child: Container(
+                      height: 52,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.white.withOpacity(0.4)),
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          BlocBuilder<ChooseDollCubit, ChooseDollState>(
+                            builder: (context, state) {
+                              if (state is ChooseDollLoading) {
+                                return const Center(
+                                  child: CircularProgressIndicator.adaptive(),
+                                );
+                              }
 
-                            return InkWell(
-                              onTap: () {
-                                if (context
-                                        .read<MainRepository>()
-                                        .user
-                                        .activeSckinId !=
-                                    widget.skin.id) {
-                                  context
-                                      .read<ChooseDollCubit>()
-                                      .changeDoll(widget.skin.id);
-                                }
-                              },
-                              child: Text(
+                              return Text(
                                 context
                                             .read<MainRepository>()
                                             .user
@@ -120,11 +117,11 @@ class _InventoryMatreshkaCardState extends State<InventoryMatreshkaCard> {
                                     : "On you",
                                 style: AppFonts.font18w400
                                     .copyWith(color: AppColors.c322A2A),
-                              ),
-                            );
-                          },
-                        )
-                      ],
+                              );
+                            },
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],
