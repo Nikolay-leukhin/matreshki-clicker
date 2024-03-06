@@ -1,16 +1,24 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:matreshka/features/inventory/logic/choose_doll/choose_doll_cubit.dart';
+import 'package:matreshka/features/main/data/main_repository.dart';
 import 'package:matreshka/models/market_model.dart';
 import 'package:matreshka/models/skin_model.dart';
 import 'package:matreshka/utils/colors.dart';
 import 'package:matreshka/utils/fonts.dart';
 
-class InventoryMatreshkaCard extends StatelessWidget {
+class InventoryMatreshkaCard extends StatefulWidget {
   final SkinModel skin;
 
   const InventoryMatreshkaCard({super.key, required this.skin});
 
+  @override
+  State<InventoryMatreshkaCard> createState() => _InventoryMatreshkaCardState();
+}
+
+class _InventoryMatreshkaCardState extends State<InventoryMatreshkaCard> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
@@ -46,7 +54,7 @@ class InventoryMatreshkaCard extends StatelessWidget {
                       SizedBox(
                         width: size.width * 0.46,
                         child: Image.asset(
-                          skin.iconPath,
+                          widget.skin.iconPath,
                           height: size.width * 0.55,
                           fit: BoxFit.fitHeight,
                         ),
@@ -54,11 +62,11 @@ class InventoryMatreshkaCard extends StatelessWidget {
                       Column(
                         children: [
                           Image.asset(
-                            skin.coinIconPath,
+                            widget.skin.coinIconPath,
                             height: 50,
                             fit: BoxFit.fitHeight,
                           ),
-                          Text(skin.coinName,
+                          Text(widget.skin.coinName,
                               style: AppFonts.font20w400
                                   .copyWith(color: AppColors.c322A2A))
                         ],
@@ -72,30 +80,48 @@ class InventoryMatreshkaCard extends StatelessWidget {
                     height: 2,
                   ),
                   const Spacer(),
-                  Container(
-                    height: 52,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: Colors.white.withOpacity(0.4)),
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/coin.png',
-                          height: 30,
-                          fit: BoxFit.fitHeight,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "Choose",
-                          style: AppFonts.font18w400
-                              .copyWith(color: AppColors.c322A2A),
-                        )
-                      ],
+                  InkWell(
+                    onTap: () {
+                      if (context.read<MainRepository>().user.activeSckinId !=
+                          widget.skin.id) {
+                        context
+                            .read<ChooseDollCubit>()
+                            .changeDoll(widget.skin.id);
+                      }
+                    },
+                    child: Container(
+                      height: 52,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.white.withOpacity(0.4)),
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          BlocBuilder<ChooseDollCubit, ChooseDollState>(
+                            builder: (context, state) {
+                              if (state is ChooseDollLoading) {
+                                return const Center(
+                                  child: CircularProgressIndicator.adaptive(),
+                                );
+                              }
+
+                              return Text(
+                                context
+                                            .read<MainRepository>()
+                                            .user
+                                            .activeSckinId !=
+                                        widget.skin.id
+                                    ? "Choose"
+                                    : "On you",
+                                style: AppFonts.font18w400
+                                    .copyWith(color: AppColors.c322A2A),
+                              );
+                            },
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],

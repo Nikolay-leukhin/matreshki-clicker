@@ -73,4 +73,10 @@ class MainRepository {
       "create_at": Timestamp.now()
     });
   }
+
+  Future<void> changeDoll(String newId) async {
+    final userColl = FirebaseCollections.userCollection.doc(user.id.toString());
+    await userColl.update({"active_skin_id": newId});
+    user.activeSckinId = newId;
+  }
 }

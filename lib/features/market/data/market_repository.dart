@@ -11,6 +11,7 @@ class MarketRepository {
   void buyItem() {}
 
   Future<void> loadMarketPromocodes() async {
+    promoItems.clear();
     final data = await FirebaseCollections.marketPromoCollection.get();
 
     for (var doc in data.docs) {
@@ -31,6 +32,7 @@ class MarketRepository {
   }
 
   Future<void> loadMarketSkins() async {
+    skinsList.clear();
     final data = await FirebaseCollections.marketSkinsCollection.get();
 
     for (var doc in data.docs) {
