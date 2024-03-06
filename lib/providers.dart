@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matreshka/app.dart';
 import 'package:matreshka/features/app/cubit/app_cubit.dart';
+import 'package:matreshka/features/inventory/logic/choose_doll/choose_doll_cubit.dart';
+import 'package:matreshka/features/inventory/logic/inventory/inventory_cubit.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
 import 'package:matreshka/features/main/logic/main/main_cubit.dart';
 import 'package:matreshka/features/market/data/market_repository.dart';
@@ -39,7 +41,9 @@ class AppBlocProviders extends StatelessWidget {
           create: (context) => MainCubit(mainRepository),
         ),
         BlocProvider(create: (context) => AppCubit(mainRepository)),
-        BlocProvider(create: (context) => MarketCubit(marketRepository))
+        BlocProvider(create: (context) => MarketCubit(marketRepository)),
+        BlocProvider(create: (context) => InventoryCubit(mainRepository)),
+        BlocProvider(create: (context) => ChooseDollCubit(mainRepository))
       ],
       child: MyApp(),
     );

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:matreshka/features/inventory/logic/inventory/inventory_cubit.dart';
 import 'package:matreshka/features/inventory/ui/inventory_doll_card.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
-import 'package:matreshka/features/market/data/market_repository.dart';
-import 'package:matreshka/features/market/logic/cubit/market_cubit.dart';
-import 'package:matreshka/features/market/ui/market_doll_card.dart';
-import 'package:matreshka/features/market/ui/market_promo_card.dart';
 
 import 'package:matreshka/utils/fonts.dart';
 
@@ -26,6 +23,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
   @override
   void initState() {
     mainRepository = RepositoryProvider.of<MainRepository>(context);
+    context.read<InventoryCubit>().loadUserItems();
     super.initState();
   }
 
@@ -64,14 +62,14 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SvgPicture.asset(
-                        "assets/icons/bag.svg",
+                        "assets/icons/inventory.svg",
                         width: 60,
                       ),
                       const SizedBox(
                         height: 8,
                       ),
                       Text(
-                        "SHOP",
+                        "Inventory",
                         style:
                             AppFonts.font29w400.copyWith(color: Colors.white),
                       )
@@ -129,42 +127,30 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
+       
                   SizedBox(
                     height: size.width * 0.85 + 10,
-                    child: PageView(
-                        scrollDirection: Axis.horizontal,
-                        controller: pageScrollController2,
-                        children: mainRepository.user.userSkins
-                            .map((model) => RepaintBoundary(
-                                    child: InventoryMatreshkaCard(
-                                  skin: model,
-                                )))
-                            .toList()),
-                  )
-
-                  // SizedBox(
-                  //   height: size.width * 0.85 + 10,
-                  //   child: BlocBuilder<MarketCubit, MarketState>(
-                  //     builder: (context, state) {
-                  //       if (state is MarketLoading) {
-                  //         return const Center(
-                  //           child: CircularProgressIndicator.adaptive(),
-                  //         );
-                  //       } else if (state is MarketSuccess) {
-                  //         return PageView(
-                  //             scrollDirection: Axis.horizontal,
-                  //             controller: pageScrollController2,
-                  //             children: mainRepository.user.userSkins
-                  //                 .map((model) => RepaintBoundary(
-                  //                         child: InventoryMatreshkaCard(
-                  //                       skin: model,
-                  //                     )))
-                  //                 .toList());
-                  //       }
-                  //       return Text("fail to load");
-                  //     },
-                  //   ),
-                  // ),
+                    child: BlocBuilder<InventoryCubit, InventoryState>(
+                      builder: (context, state) {
+                        if (state is InventoryLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          );
+                        } else if (state is InventorySuccess) {
+                          return PageView(
+                              scrollDirection: Axis.horizontal,
+                              controller: pageScrollController2,
+                              children: mainRepository.user.userSkins
+                                  .map((model) => RepaintBoundary(
+                                          child: InventoryMatreshkaCard(
+                                        skin: model,
+                                      )))
+                                  .toList());
+                        }
+                        return Text("fail to load");
+                      },
+                    ),
+                  ),
                 ],
               )),
         ),
