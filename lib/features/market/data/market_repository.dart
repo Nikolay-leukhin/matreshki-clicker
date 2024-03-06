@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:matreshka/models/market_model.dart';
@@ -10,24 +11,42 @@ class MarketRepository {
   void buyItem() {}
 
   Future<void> loadMarketPromocodes() async {
-    final data = await FirebaseCollections.promoCollection.get();
-    data.docs.forEach((doc) {
-      try {
-        promoItems.add(MarketPromoModel.fromJson(doc.data()));
-      } catch (e) {
-        log("fail to parse promocode");
-      }
-    });
-  }
+    final data = await FirebaseCollections.marketPromoCollection.get();
 
-  Future<void> loadMarketSkins() async {
-    final data = await FirebaseCollections.marketCollection.get();
-    data.docs.forEach((doc) {
+    for (var doc in data.docs) {
       try {
-        skinsList.add(MarketSkinModel.fromJson(doc.data()));
+        final itemData = doc.data();
+
+        final promoDoc =
+            FirebaseCollections.promoCollection.doc(itemData['promo_id']);
+        final promoData = await promoDoc.get();
+
+        itemData.addEntries(promoData.data()!.entries);
+
+        promoItems.add(MarketPromoModel.fromJson(itemData));
       } catch (e) {
         log("fail to parse skin");
       }
-    });
+    }
+  }
+
+  Future<void> loadMarketSkins() async {
+    final data = await FirebaseCollections.marketSkinsCollection.get();
+
+    for (var doc in data.docs) {
+      try {
+        final itemData = doc.data();
+
+        final dollDoc =
+            FirebaseCollections.skinsCollection.doc(itemData['doll_id']);
+        final dollData = await dollDoc.get();
+
+        itemData.addEntries(dollData.data()!.entries);
+
+        skinsList.add(MarketSkinModel.fromJson(itemData));
+      } catch (e) {
+        log("fail to parse skin");
+      }
+    }
   }
 }

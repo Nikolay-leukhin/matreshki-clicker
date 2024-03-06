@@ -14,6 +14,7 @@ abstract class MarketItemModel {
 class MarketSkinModel extends MarketItemModel {
   final String iconPath;
   final String coinIconPath;
+  final String coinName;
 
   MarketSkinModel(
       {required super.name,
@@ -21,6 +22,7 @@ class MarketSkinModel extends MarketItemModel {
       required super.description,
       required this.iconPath,
       required this.coinIconPath,
+      required this.coinName,
       required super.id});
 
   factory MarketSkinModel.fromJson(Map<String, dynamic> json) {
@@ -28,8 +30,9 @@ class MarketSkinModel extends MarketItemModel {
         name: json['name'],
         price: json['price'],
         description: json['description'],
-        iconPath: json['iconPath'],
-        coinIconPath: json['coinIconPath'],
+        iconPath: json['image_path'],
+        coinIconPath: json['coin_icon_path'],
+        coinName: json['coin_name'],
         id: json['id']);
   }
 }

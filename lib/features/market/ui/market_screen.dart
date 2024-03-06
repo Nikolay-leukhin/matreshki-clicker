@@ -303,7 +303,7 @@ class MarketMatreshkaCard extends StatelessWidget {
                             height: 50,
                             fit: BoxFit.fitHeight,
                           ),
-                          Text('Emerald',
+                          Text(skin.coinName,
                               style: AppFonts.font20w400
                                   .copyWith(color: AppColors.c322A2A))
                         ],
@@ -332,7 +332,7 @@ class MarketMatreshkaCard extends StatelessWidget {
                           height: 30,
                           fit: BoxFit.fitHeight,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Text(
