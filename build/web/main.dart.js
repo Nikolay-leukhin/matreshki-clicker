@@ -70862,8 +70862,8 @@ A.asl(B.E4,new A.afa(s))
 s.b1()},
 RF(){var s,r,q,p,o
 for(s=this.r,r=s.length,q=0;q<r;++q){p=s[q]
-o=p.b
-if(o-3>p.c)p.b=o-1.5}s=this.r
+o=p.b-1.5
+if(o>p.c)p.b=o}s=this.r
 r=A.aa(s).h("aL<1>")
 this.r=A.Z(new A.aL(s,new A.afb(),r),!0,r.h("j.E"))},
 O(a){var s=this,r=null,q=A.c9(a,B.aE,t.w).w.a,p=t.gD,o=t.xY,n=t.E,m=A.cr(A.a([A.ko("assets/images/money.png",r,75,75),B.MV,A.k5(new A.af1(s),p,o)],n),B.w,B.cf,B.v),l=A.k5(new A.af2(s,q),t.cY,t.TL),k=A.tE("assets/icons/light.svg",B.bY,50,r),j=A.k5(new A.af3(s),p,o),i=s.d
@@ -70892,11 +70892,11 @@ s.dK(new A.tc())}},
 $S:153}
 A.afa.prototype={
 $1(a){var s=this.a
-s.RF()
-s.e.u(0,!0)},
+if(s.r.length!==0){s.RF()
+s.e.u(0,!0)}},
 $S:153}
 A.afb.prototype={
-$1(a){return a.b!==a.c},
+$1(a){return a.b-3>a.c},
 $S:419}
 A.af1.prototype={
 $2(a,b){var s=this.a.d
