@@ -6,7 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
 import 'package:matreshka/features/main/logic/main/main_cubit.dart';
 import 'package:matreshka/routes/routes_names.dart';
-import 'package:matreshka/utils/colors.dart';
 import 'package:matreshka/utils/fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -27,7 +26,7 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  _onTapDown() {
+  _onTapDown(TapDownDetails details) async {
     setState(() {
       matreshka_size = 0.02;
     });
@@ -106,8 +105,8 @@ class _MainScreenState extends State<MainScreen> {
                     height: 20,
                   ),
                   GestureDetector(
-                    onTapDown: (_) {
-                      _onTapDown();
+                    onTapDown: (TapDownDetails details) {
+                      _onTapDown(details);
                       BlocProvider.of<MainCubit>(context).incrementScore();
                     },
                     onTapUp: (_) {
@@ -234,7 +233,7 @@ class _MainScreenState extends State<MainScreen> {
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Color(0xff430505)),
+                        color: const Color(0xff430505)),
                     child: SvgPicture.asset(
                       "assets/icons/inventory.svg",
                       width: 40,
