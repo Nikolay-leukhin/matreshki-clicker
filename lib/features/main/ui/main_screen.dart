@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:matreshka/features/inventory/logic/choose_doll/choose_doll_cubit.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
 import 'package:matreshka/features/main/logic/main/main_cubit.dart';
+import 'package:matreshka/models/swim_digit_model.dart';
 import 'package:matreshka/routes/routes_names.dart';
+import 'package:matreshka/utils/colors.dart';
 import 'package:matreshka/utils/fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -19,17 +22,26 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late MainRepository mainRepository;
-  double matreshka_size = 0;
+  double matreshkaSize = 0;
+  List<SwimDigit> swimDigits = [];
 
   _onTapUp() {
     setState(() {
-      matreshka_size = 0;
+      matreshkaSize = 0;
     });
   }
 
   _onTapDown(TapDownDetails details) async {
+    swimDigits.add(SwimDigit(
+        dx: details.globalPosition.dx,
+        dy: details.globalPosition.dy,
+        heightSwim: details.globalPosition.dy - 100,
+        digit: 1));
+
+    HapticFeedback.mediumImpact();
+
     setState(() {
-      matreshka_size = 0.02;
+      matreshkaSize = 0.02;
     });
   }
 
@@ -39,14 +51,14 @@ class _MainScreenState extends State<MainScreen> {
     super.dispose();
   }
 
-  Timer? _timer;
-
   @override
   void initState() {
     mainRepository = RepositoryProvider.of<MainRepository>(context);
 
     const oneSec = Duration(seconds: 1);
-    _timer = Timer.periodic(
+    const oneMilliSec = Duration(milliseconds: 1);
+
+    Timer.periodic(
       oneSec,
       (Timer timer) {
         if (timer.tick % 2 == 0) {
@@ -55,7 +67,26 @@ class _MainScreenState extends State<MainScreen> {
       },
     );
 
+    Timer.periodic(
+      oneMilliSec,
+      (Timer timer) {
+        setCurrentFrame();
+        setState(() {});
+      },
+    );
+
     super.initState();
+  }
+
+  setCurrentFrame() {
+    for (var element in swimDigits) {
+      if (element.dy > element.heightSwim) {
+        element.dy -= 1;
+      }
+    }
+    swimDigits = swimDigits
+        .where((element) => element.dy != element.heightSwim)
+        .toList();
   }
 
   @override
@@ -119,7 +150,7 @@ class _MainScreenState extends State<MainScreen> {
                           alignment: Alignment.center,
                           duration: const Duration(milliseconds: 100),
                           height: size.height * 0.5,
-                          padding: EdgeInsets.all(size.height * matreshka_size),
+                          padding: EdgeInsets.all(size.height * matreshkaSize),
                           child: Image.asset(
                             mainRepository.user.userSkins
                                 .where((e) =>
@@ -247,7 +278,16 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 )
               ],
-            )
+            ),
+            ...swimDigits.map((e) {
+              return Positioned(
+                  left: e.dx,
+                  top: e.dy,
+                  child: Text(
+                    e.digit.toString(),
+                    style: AppFonts.font29w400.copyWith(color: AppColors.white10.withOpacity((e.dy - e.heightSwim) / 100)),
+                  ));
+            }).toList()
           ],
         ),
       )),
