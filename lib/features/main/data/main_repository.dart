@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:matreshka/models/market_model.dart';
+import 'package:matreshka/models/promo_model.dart';
 import 'package:matreshka/models/skin_model.dart';
 import 'package:matreshka/models/user_model.dart';
 import 'package:matreshka/services/firebase/firebase_collections.dart';
@@ -29,20 +30,32 @@ class MainRepository {
 
     final res = (await userDoc.get()).data();
 
-    _user = UserModel.fromJson(res!, await loadUserSkins(res['user_skins']));
+    _user = UserModel.fromJson(res!, await loadUserSkins(res['user_skins']),
+        await loadUserPromo(res['user_promo']));
   }
 
   Future<List<SkinModel>> loadUserSkins(List<dynamic> dollsId) async {
     List<SkinModel> skins = [];
-    print(dollsId);
+
     for (var id in dollsId) {
       final doc = FirebaseCollections.skinsCollection.doc(id);
       final dollData = await doc.get();
-      print("hi");
       skins.add(SkinModel.fromJson(dollData.data()!, id));
     }
 
     return skins;
+  }
+
+  Future<List<PromoModel>> loadUserPromo(List<dynamic> promoIdList) async {
+    List<PromoModel> promoList = [];
+    for (var id in promoIdList) {
+      final doc = FirebaseCollections.promoCollection.doc(id);
+      final data = await doc.get();
+
+      promoList.add(PromoModel.fromJson(data.data()!));
+    }
+
+    return promoList;
   }
 
   onTap() async {

@@ -1,13 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:matreshka/models/market_model.dart';
+import 'package:matreshka/models/promo_model.dart';
 import 'package:matreshka/utils/colors.dart';
 import 'package:matreshka/utils/fonts.dart';
 
 
 class InventoryPromoCard extends StatelessWidget {
-  final MarketPromoModel promo;
+  final PromoModel promo;
 
   const InventoryPromoCard({super.key, required this.promo});
 
@@ -79,7 +79,7 @@ class InventoryPromoCard extends StatelessWidget {
                               width: 5,
                             ),
                             Text(
-                              promo.price.toString(),
+                              "*******",
                               overflow: TextOverflow.ellipsis,
                               style: AppFonts.font15w400
                                   .copyWith(color: AppColors.c322A2A),
@@ -87,6 +87,16 @@ class InventoryPromoCard extends StatelessWidget {
                           ],
                         )
                       ],
+                    ),
+                  ),
+                  Spacer(),
+                  InkWell(
+                    onTap: () {
+
+                    },
+                    child: const Padding(
+                      padding:  EdgeInsets.all(10),
+                      child: Icon(Icons.info_outline, size: 30,),
                     ),
                   )
                 ],

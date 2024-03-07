@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:matreshka/features/inventory/logic/inventory/inventory_cubit.dart';
 import 'package:matreshka/features/inventory/ui/inventory_doll_card.dart';
+import 'package:matreshka/features/inventory/ui/inventory_promo_card.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
 
 import 'package:matreshka/utils/fonts.dart';
@@ -114,6 +115,29 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   const SizedBox(
                     height: 5,
                   ),
+                  SizedBox(
+                    height: 109,
+                    child: BlocBuilder<InventoryCubit, InventoryState>(
+                      builder: (context, state) {
+                        if (state is InventoryLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          );
+                        } else if (state is InventorySuccess) {
+                          return PageView(
+                              controller: pageScrollController1,
+                              scrollDirection: Axis.horizontal,
+                              children: mainRepository.user.userPromo
+                                  .map((model) => RepaintBoundary(
+                                          child: InventoryPromoCard(
+                                        promo: model,
+                                      )))
+                                  .toList());
+                        }
+                        return Text("fail to load");
+                      },
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
@@ -127,7 +151,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-       
+
                   SizedBox(
                     height: size.width * 0.85 + 10,
                     child: BlocBuilder<InventoryCubit, InventoryState>(

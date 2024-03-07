@@ -29,7 +29,7 @@ class _MainScreenState extends State<MainScreen> {
 
   _onTapDown(TapDownDetails details) async {
     setState(() {
-      matreshka_size = 0.02;
+      matreshka_size = 0.005;
     });
   }
 
