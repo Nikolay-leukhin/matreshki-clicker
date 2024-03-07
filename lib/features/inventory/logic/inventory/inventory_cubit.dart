@@ -18,10 +18,15 @@ class InventoryCubit extends Cubit<InventoryState> {
           .doc(mainRepository.user.id.toString());
       final user = await userDoc.get();
 
-      final userData = await mainRepository.loadUserSkins(user['user_skins']);
-      mainRepository.user.userSkins = userData;
+      final userSkins = await mainRepository.loadUserSkins(user['user_skins']);
+      final userPromo = await mainRepository.loadUserPromo(user['user_promo']);
+
+      mainRepository.user.userSkins = userSkins;
+      mainRepository.user.userPromo = userPromo;
+
       emit(InventorySuccess());
     } catch (e) {
+      print(e);
       emit(InventoryFail());
     }
   }

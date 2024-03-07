@@ -1,10 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:matreshka/features/main/data/main_repository.dart';
+import 'package:matreshka/features/market/logic/buy/buy_cubit.dart';
 import 'package:matreshka/models/market_model.dart';
 import 'package:matreshka/utils/colors.dart';
 import 'package:matreshka/utils/fonts.dart';
-
 
 class MarketPromoCard extends StatelessWidget {
   final MarketPromoModel promo;
@@ -87,6 +89,26 @@ class MarketPromoCard extends StatelessWidget {
                           ],
                         )
                       ],
+                    ),
+                  ),
+                  Spacer(),
+                  InkWell(
+                    onTap: () {
+                      if (context.read<MainRepository>().user.score >
+                          promo.price) {
+                        context
+                            .read<BuyCubit>()
+                            .buyItem(ProductTypes.promo, promo);
+                      }
+                    },
+                    borderRadius: BorderRadius.circular(500),
+                    child: const Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Icon(
+                        Icons.shopping_cart_outlined,
+                        size: 30,
+                        color: AppColors.c322A2A,
+                      ),
                     ),
                   )
                 ],
