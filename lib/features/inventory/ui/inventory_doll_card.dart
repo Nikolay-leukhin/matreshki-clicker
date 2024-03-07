@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matreshka/features/inventory/logic/choose_doll/choose_doll_cubit.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
-import 'package:matreshka/models/market_model.dart';
 import 'package:matreshka/models/skin_model.dart';
 import 'package:matreshka/utils/colors.dart';
 import 'package:matreshka/utils/fonts.dart';

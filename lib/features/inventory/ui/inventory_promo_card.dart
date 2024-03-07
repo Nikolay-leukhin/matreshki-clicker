@@ -89,7 +89,7 @@ class InventoryPromoCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   InkWell(
                     onTap: () {
 
