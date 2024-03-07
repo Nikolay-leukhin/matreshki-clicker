@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:matreshka/features/inventory/logic/choose_doll/choose_doll_cubit.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
 import 'package:matreshka/features/main/logic/main/main_cubit.dart';
 import 'package:matreshka/routes/routes_names.dart';
@@ -104,28 +105,32 @@ class _MainScreenState extends State<MainScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  GestureDetector(
-                    onTapDown: (TapDownDetails details) {
-                      _onTapDown(details);
-                      BlocProvider.of<MainCubit>(context).incrementScore();
+                  BlocBuilder<ChooseDollCubit, ChooseDollState>(
+                    builder: (context, state) {
+                      return GestureDetector(
+                        onTapDown: (TapDownDetails details) {
+                          _onTapDown(details);
+                          BlocProvider.of<MainCubit>(context).incrementScore();
+                        },
+                        onTapUp: (_) {
+                          _onTapUp();
+                        },
+                        child: AnimatedContainer(
+                          alignment: Alignment.center,
+                          duration: const Duration(milliseconds: 100),
+                          height: size.height * 0.5,
+                          padding: EdgeInsets.all(size.height * matreshka_size),
+                          child: Image.asset(
+                            mainRepository.user.userSkins
+                                .where((e) =>
+                                    e.id == mainRepository.user.activeSckinId)
+                                .first
+                                .iconPath,
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                      );
                     },
-                    onTapUp: (_) {
-                      _onTapUp();
-                    },
-                    child: AnimatedContainer(
-                      alignment: Alignment.center,
-                      duration: const Duration(milliseconds: 100),
-                      height: size.height * 0.5,
-                      padding: EdgeInsets.all(size.height * matreshka_size),
-                      child: Image.asset(
-                        mainRepository.user.userSkins
-                            .where((e) =>
-                                e.id == mainRepository.user.activeSckinId)
-                            .first
-                            .iconPath,
-                        fit: BoxFit.fitHeight,
-                      ),
-                    ),
                   ),
                   const Spacer(),
                   Container(
