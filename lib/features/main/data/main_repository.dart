@@ -79,4 +79,26 @@ class MainRepository {
     await userColl.update({"active_skin_id": newId});
     user.activeSckinId = newId;
   }
+
+  Future<void> buySkin(MarketSkinModel item) async {
+    final userDoc = FirebaseCollections.userCollection.doc(user.id.toString());
+    await userDoc.update({
+      "user_skins": FieldValue.arrayUnion([item.id])
+    });
+    await payForItem(item.price);
+  }
+
+  Future<void> buyPromo(MarketPromoModel promo) async {
+    final userDoc = FirebaseCollections.userCollection.doc(user.id.toString());
+    await userDoc.update({
+      "user_promo": FieldValue.arrayUnion([promo.id])
+    });
+    await payForItem(promo.price);
+  }
+
+  Future<void> payForItem(int price) async {
+    final userDoc = FirebaseCollections.userCollection.doc(user.id.toString());
+    await userDoc.update({'score': user.score - price});
+    _user.score -= price;
+  }
 }

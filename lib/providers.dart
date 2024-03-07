@@ -7,6 +7,7 @@ import 'package:matreshka/features/inventory/logic/inventory/inventory_cubit.dar
 import 'package:matreshka/features/main/data/main_repository.dart';
 import 'package:matreshka/features/main/logic/main/main_cubit.dart';
 import 'package:matreshka/features/market/data/market_repository.dart';
+import 'package:matreshka/features/market/logic/buy/buy_cubit.dart';
 import 'package:matreshka/features/market/logic/cubit/market_cubit.dart';
 
 class AppRepositoryProviders extends StatelessWidget {
@@ -43,7 +44,8 @@ class AppBlocProviders extends StatelessWidget {
         BlocProvider(create: (context) => AppCubit(mainRepository)),
         BlocProvider(create: (context) => MarketCubit(marketRepository)),
         BlocProvider(create: (context) => InventoryCubit(mainRepository)),
-        BlocProvider(create: (context) => ChooseDollCubit(mainRepository))
+        BlocProvider(create: (context) => ChooseDollCubit(mainRepository)),
+        BlocProvider(create: (context) => BuyCubit(mainRepository))
       ],
       child: MyApp(),
     );

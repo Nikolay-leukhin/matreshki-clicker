@@ -1,15 +1,24 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:matreshka/features/main/data/main_repository.dart';
+import 'package:matreshka/features/main/ui/main_screen.dart';
+import 'package:matreshka/features/market/logic/buy/buy_cubit.dart';
 import 'package:matreshka/models/market_model.dart';
 import 'package:matreshka/utils/colors.dart';
 import 'package:matreshka/utils/fonts.dart';
 
-class MarketMatreshkaCard extends StatelessWidget {
+class MarketMatreshkaCard extends StatefulWidget {
   final MarketSkinModel skin;
 
   const MarketMatreshkaCard({super.key, required this.skin});
 
+  @override
+  State<MarketMatreshkaCard> createState() => _MarketMatreshkaCardState();
+}
+
+class _MarketMatreshkaCardState extends State<MarketMatreshkaCard> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
@@ -45,7 +54,7 @@ class MarketMatreshkaCard extends StatelessWidget {
                       SizedBox(
                         width: size.width * 0.46,
                         child: Image.asset(
-                          skin.iconPath,
+                          widget.skin.iconPath,
                           height: size.width * 0.55,
                           fit: BoxFit.fitHeight,
                         ),
@@ -53,11 +62,11 @@ class MarketMatreshkaCard extends StatelessWidget {
                       Column(
                         children: [
                           Image.asset(
-                            skin.coinIconPath,
+                            widget.skin.coinIconPath,
                             height: 50,
                             fit: BoxFit.fitHeight,
                           ),
-                          Text(skin.coinName,
+                          Text(widget.skin.coinName,
                               style: AppFonts.font20w400
                                   .copyWith(color: AppColors.c322A2A))
                         ],
@@ -71,30 +80,41 @@ class MarketMatreshkaCard extends StatelessWidget {
                     height: 2,
                   ),
                   const Spacer(),
-                  Container(
-                    height: 52,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: Colors.white.withOpacity(0.4)),
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/coin.png',
-                          height: 30,
-                          fit: BoxFit.fitHeight,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          skin.price.toString(),
-                          style: AppFonts.font18w400
-                              .copyWith(color: AppColors.c322A2A),
-                        )
-                      ],
+                  InkWell(
+                    onTap: () {
+                      if (isInInventory() == false && context.read<MainRepository>().user.score > widget.skin.price) {
+                        context
+                            .read<BuyCubit>()
+                            .buyItem(ProductTypes.skin, widget.skin);
+                      }
+                    },
+                    child: Container(
+                      height: 52,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.white.withOpacity(0.4)),
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/coin.png',
+                            height: 30,
+                            fit: BoxFit.fitHeight,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            isInInventory() == false
+                                ? widget.skin.price.toString()
+                                : "You have this",
+                            style: AppFonts.font18w400
+                                .copyWith(color: AppColors.c322A2A),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -102,5 +122,11 @@ class MarketMatreshkaCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool isInInventory() {
+    final data =
+        (context.read<MainRepository>().user.userSkins.map((e) => e.id));
+    return data.contains(widget.skin.id);
   }
 }
