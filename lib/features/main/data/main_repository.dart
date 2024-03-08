@@ -70,9 +70,9 @@ class MainRepository {
   }
 
   onTimePicker() async {
-    if (user.currentEnergy < user.maxEnergy) {
+    if (user.currentEnergy <= user.maxEnergy) {
       user.currentEnergy +=
-          (user.currentEnergy + user.scorePerClick >= user.maxEnergy)
+          (user.currentEnergy + user.scorePerClick > user.maxEnergy)
               ? 0
               : user.scorePerClick;
       EasyDebounce.debounce(
