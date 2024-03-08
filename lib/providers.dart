@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matreshka/app.dart';
 import 'package:matreshka/features/app/cubit/app_cubit.dart';
+import 'package:matreshka/features/boosts/data/boosts_repository.dart';
+import 'package:matreshka/features/boosts/logic/boosts_cubit.dart';
 import 'package:matreshka/features/inventory/logic/choose_doll/choose_doll_cubit.dart';
 import 'package:matreshka/features/inventory/logic/inventory/inventory_cubit.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
@@ -23,8 +25,13 @@ class AppRepositoryProviders extends StatelessWidget {
       RepositoryProvider(
         create: (context) => MarketRepository(),
         lazy: false,
+      ),
+      RepositoryProvider(
+        create: (context) => BoostsRepository(
+            mainRepository: RepositoryProvider.of<MainRepository>(context)),
+        lazy: false,
       )
-    ], child: AppBlocProviders());
+    ], child: const AppBlocProviders());
   }
 }
 
@@ -35,6 +42,7 @@ class AppBlocProviders extends StatelessWidget {
   Widget build(BuildContext context) {
     final mainRepository = RepositoryProvider.of<MainRepository>(context);
     final marketRepository = RepositoryProvider.of<MarketRepository>(context);
+    final boostsRepository = RepositoryProvider.of<BoostsRepository>(context);
 
     return MultiBlocProvider(
       providers: [
@@ -45,9 +53,12 @@ class AppBlocProviders extends StatelessWidget {
         BlocProvider(create: (context) => MarketCubit(marketRepository)),
         BlocProvider(create: (context) => InventoryCubit(mainRepository)),
         BlocProvider(create: (context) => ChooseDollCubit(mainRepository)),
-        BlocProvider(create: (context) => BuyCubit(mainRepository))
+        BlocProvider(create: (context) => BuyCubit(mainRepository)),
+        BlocProvider(
+            create: (context) =>
+                BoostsCubit(boostsRepository: boostsRepository))
       ],
-      child: MyApp(),
+      child: const MyApp(),
     );
   }
 }

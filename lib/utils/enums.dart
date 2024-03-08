@@ -1,0 +1,1 @@
+enum LoadingStateEnum { wait, loading, success, fail }

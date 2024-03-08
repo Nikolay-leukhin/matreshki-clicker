@@ -17,5 +17,4 @@ class AppCubit extends Cubit<AppState> {
     await mainRepository.initData();
     emit(AppDataLoaded());
   }
-
 }

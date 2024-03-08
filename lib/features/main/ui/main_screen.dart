@@ -38,7 +38,7 @@ class _MainScreenState extends State<MainScreen> {
         dx: details.globalPosition.dx,
         dy: details.globalPosition.dy,
         heightSwim: details.globalPosition.dy - 150,
-        digit: 1));
+        digit: mainRepository.user.scorePerClick));
 
     HapticFeedback.mediumImpact();
 
@@ -58,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
     mainRepository = RepositoryProvider.of<MainRepository>(context);
 
     const oneSec = Duration(seconds: 1);
-    const oneMilliSec = Duration(milliseconds: 5);
+    const oneMilliSec = Duration(milliseconds: 10);
 
     Timer.periodic(
       oneSec,
