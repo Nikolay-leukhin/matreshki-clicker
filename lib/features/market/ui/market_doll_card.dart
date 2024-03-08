@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
 import 'package:matreshka/features/main/ui/main_screen.dart';
 import 'package:matreshka/features/market/logic/buy/buy_cubit.dart';
@@ -61,7 +62,7 @@ class _MarketMatreshkaCardState extends State<MarketMatreshkaCard> {
                       ),
                       Column(
                         children: [
-                          Image.asset(
+                          SvgPicture.asset(
                             widget.skin.coinIconPath,
                             height: 50,
                             fit: BoxFit.fitHeight,

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:matreshka/features/inventory/logic/choose_doll/choose_doll_cubit.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
 import 'package:matreshka/models/skin_model.dart';
@@ -60,7 +61,7 @@ class _InventoryMatreshkaCardState extends State<InventoryMatreshkaCard> {
                       ),
                       Column(
                         children: [
-                          Image.asset(
+                          SvgPicture.asset(
                             widget.skin.coinIconPath,
                             height: 50,
                             fit: BoxFit.fitHeight,
