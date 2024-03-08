@@ -61,7 +61,9 @@ class MainRepository {
   onTap() async {
     if (user.currentEnergy - user.scorePerClick >= 0) {
       user.score += user.scorePerClick;
-      user.currentEnergy -= user.currentEnergy - 1 < 0 ? 0 : 1;
+      user.currentEnergy -= (user.currentEnergy - user.scorePerClick) < 0
+          ? 0
+          : user.scorePerClick;
       EasyDebounce.debounce(
           "increment", const Duration(seconds: 1), updateData);
     }
@@ -69,7 +71,10 @@ class MainRepository {
 
   onTimePicker() async {
     if (user.currentEnergy < user.maxEnergy) {
-      user.currentEnergy += user.currentEnergy == user.maxEnergy ? 0 : 1;
+      user.currentEnergy +=
+          (user.currentEnergy + user.scorePerClick >= user.maxEnergy)
+              ? 0
+              : user.scorePerClick;
       EasyDebounce.debounce(
           "increment", const Duration(microseconds: 1), updateData);
     }
@@ -95,23 +100,33 @@ class MainRepository {
 
   Future<void> buySkin(MarketSkinModel item) async {
     final userDoc = FirebaseCollections.userCollection.doc(user.id.toString());
+
+    await payForItem(item.price);
+
     await userDoc.update({
       "user_skins": FieldValue.arrayUnion([item.id])
     });
-    await payForItem(item.price);
   }
 
   Future<void> buyPromo(MarketPromoModel promo) async {
     final userDoc = FirebaseCollections.userCollection.doc(user.id.toString());
+
+    await payForItem(promo.price);
+
     await userDoc.update({
       "user_promo": FieldValue.arrayUnion([promo.id])
     });
-    await payForItem(promo.price);
   }
 
-  Future<void> payForItem(int price) async {
-    final userDoc = FirebaseCollections.userCollection.doc(user.id.toString());
-    await userDoc.update({'score': user.score - price});
-    _user.score -= price;
+  Future<dynamic> payForItem(int price) async {
+    if(user.score >= price) {
+      final userDoc = FirebaseCollections.userCollection.doc(
+          user.id.toString());
+      await userDoc.update({'score': user.score - price});
+      _user.score -= price;
+    }
+    else{
+      throw Exception('malo balansa');
+    }
   }
 }

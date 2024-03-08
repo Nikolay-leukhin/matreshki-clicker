@@ -16,11 +16,12 @@ class BoostsRepository {
       final userDoc = FirebaseCollections.userCollection
           .doc(mainRepository.user.id.toString());
 
+      await mainRepository.payForItem(getCurrentMultiTapPrice());
+
       await userDoc.update({'score_per_click': FieldValue.increment(1)});
 
       mainRepository.user.scorePerClick += 1;
 
-      await mainRepository.payForItem(getCurrentMultiTapPrice());
     }
   }
 
@@ -29,9 +30,9 @@ class BoostsRepository {
       final userDoc = FirebaseCollections.userCollection
           .doc(mainRepository.user.id.toString());
 
-      await userDoc.update({'max_energy': FieldValue.increment(1000)});
-
       await mainRepository.payForItem((getCurrentEnergyPrice()));
+
+      await userDoc.update({'max_energy': FieldValue.increment(1000)});
 
       mainRepository.user.maxEnergy += 1000;
     }

@@ -183,23 +183,23 @@ class _MainScreenState extends State<MainScreen> {
                             const SizedBox(
                               width: 10,
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                BlocBuilder<MainCubit, MainState>(
-                                  builder: (context, state) {
-                                    return Text(
+                            BlocBuilder<MainCubit, MainState>(
+                              builder: (context, state) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
                                       mainRepository.user.currentEnergy
                                           .toString(),
                                       style: AppFonts.font29w400.copyWith(
                                           color: Colors.white, height: 0),
-                                    );
-                                  },
-                                ),
-                                Text("/${mainRepository.user.maxEnergy}",
-                                    style: AppFonts.font13w400
-                                        .copyWith(color: Colors.grey)),
-                              ],
+                                    ),
+                                    Text("/${mainRepository.user.maxEnergy}",
+                                        style: AppFonts.font13w400
+                                            .copyWith(color: Colors.grey)),
+                                  ],
+                                );
+                              },
                             )
                           ],
                         ),
