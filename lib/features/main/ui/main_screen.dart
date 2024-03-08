@@ -12,6 +12,7 @@ import 'package:matreshka/routes/routes_names.dart';
 import 'package:matreshka/utils/colors.dart';
 import 'package:matreshka/utils/fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:rxdart/subjects.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -22,6 +23,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late MainRepository mainRepository;
+  final streamOnDigit = BehaviorSubject.seeded(true);
   double matreshkaSize = 0;
   List<SwimDigit> swimDigits = [];
 
@@ -35,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
     swimDigits.add(SwimDigit(
         dx: details.globalPosition.dx,
         dy: details.globalPosition.dy,
-        heightSwim: details.globalPosition.dy - 100,
+        heightSwim: details.globalPosition.dy - 150,
         digit: 1));
 
     HapticFeedback.mediumImpact();
@@ -56,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
     mainRepository = RepositoryProvider.of<MainRepository>(context);
 
     const oneSec = Duration(seconds: 1);
-    const oneMilliSec = Duration(milliseconds: 1);
+    const oneMilliSec = Duration(milliseconds: 5);
 
     Timer.periodic(
       oneSec,
@@ -70,8 +72,10 @@ class _MainScreenState extends State<MainScreen> {
     Timer.periodic(
       oneMilliSec,
       (Timer timer) {
-        setCurrentFrame();
-        setState(() {});
+        if (swimDigits.isNotEmpty) {
+          setCurrentFrame();
+          streamOnDigit.add(true);
+        }
       },
     );
 
@@ -80,12 +84,13 @@ class _MainScreenState extends State<MainScreen> {
 
   setCurrentFrame() {
     for (var element in swimDigits) {
-      if (element.dy > element.heightSwim) {
-        element.dy -= 1;
+      if (element.dy - 1.5 > element.heightSwim) {
+        element.dy -= 1.5;
       }
     }
+
     swimDigits = swimDigits
-        .where((element) => element.dy != element.heightSwim)
+        .where((element) => element.dy - 3 > element.heightSwim)
         .toList();
   }
 
@@ -279,15 +284,34 @@ class _MainScreenState extends State<MainScreen> {
                 )
               ],
             ),
-            ...swimDigits.map((e) {
-              return Positioned(
-                  left: e.dx,
-                  top: e.dy,
-                  child: Text(
-                    e.digit.toString(),
-                    style: AppFonts.font29w400.copyWith(color: AppColors.white10.withOpacity((e.dy - e.heightSwim) / 100)),
-                  ));
-            }).toList()
+            StreamBuilder<bool>(
+              stream: streamOnDigit,
+              builder: (context, state) {
+                return Stack(
+                  children: swimDigits.map((e) {
+                    return Positioned(
+                        left: e.dx,
+                        top: e.dy,
+                        child: GestureDetector(
+                          onTapDown: (TapDownDetails details) {
+                            _onTapDown(details);
+                            BlocProvider.of<MainCubit>(context)
+                                .incrementScore();
+                          },
+                          onTapUp: (_) {
+                            _onTapUp();
+                          },
+                          child: Text(
+                            e.digit.toString(),
+                            style: AppFonts.font29w400.copyWith(
+                                color: AppColors.white10
+                                    .withOpacity((e.dy - e.heightSwim) / 150)),
+                          ),
+                        ));
+                  }).toList(),
+                );
+              },
+            )
           ],
         ),
       )),
