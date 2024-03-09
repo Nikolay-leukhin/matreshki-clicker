@@ -38,4 +38,14 @@ class BoostsCubit extends Cubit<BoostsState> {
       emit(BoostsFail());
     }
   }
+
+  Future<void> incrementRechargingSpeed() async {
+    emit(BoostsLoading());
+    try {
+      await boostsRepository.incrementRechargingSpeed();
+      emit(BoostsSuccess());
+    } catch (e) {
+      emit(BoostsFail());
+    }
+  }
 }

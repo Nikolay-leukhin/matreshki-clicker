@@ -198,10 +198,13 @@ class _BoostsScreenState extends State<BoostsScreen> {
                               ),
                               MediumBoostWidget(
                                 title: 'Recharging speed',
-                                lvl: 11,
-                                prise: 1000,
+                                lvl: boostsRepository.getCurrentRechargingLvl(),
+                                prise: boostsRepository.getCurrentRechargingPrise(),
                                 assetIcon: 'light.svg',
-                                onTap: () {},
+                                onTap: () {
+                                  BlocProvider.of<BoostsCubit>(context)
+                                      .incrementRechargingSpeed();
+                                },
                               ),
                             ],
                           );
