@@ -12,6 +12,8 @@ class UserModel {
   int currentEnergy;
   int score;
   Timestamp time;
+  int rechargingSpeed;
+  int activeFullEnergy;
 
   UserModel(
       {required this.id,
@@ -22,29 +24,33 @@ class UserModel {
       required this.time,
       required this.activeSckinId,
       required this.userPromo,
-      required this.userSkins});
+      required this.userSkins,
+      required this.rechargingSpeed,
+      required this.activeFullEnergy});
 
   factory UserModel.fromJson(Map<String, dynamic> json, List<SkinModel> skins,
       List<PromoModel> promos) {
-    var _maxEnergy = (json['max_energy']) as int;
+    var maxEnergy = (json['max_energy']) as int;
 
     var times = (json['create_at'].millisecondsSinceEpoch) / 1000;
 
     return UserModel(
         id: json['user_id'] as int,
-        maxEnergy: _maxEnergy,
+        maxEnergy: maxEnergy,
         scorePerClick: (json['score_per_click'] ?? 1) as int,
         time: json['create_at'],
         currentEnergy: ((json['energy'] as int) +
                     (DateTime.now().millisecondsSinceEpoch / 1000 - times) /
                         2) >
-                _maxEnergy
-            ? _maxEnergy
+                maxEnergy
+            ? maxEnergy
             : (json['energy'] as int) +
                 (DateTime.now().millisecondsSinceEpoch / 1000 - times) ~/ 2,
         score: (json['score'] as int),
         activeSckinId: json['active_skin_id'],
         userSkins: skins,
-        userPromo: promos);
+        userPromo: promos,
+        rechargingSpeed: json['recharging_speed'] as int,
+        activeFullEnergy: json["active_full_energy"] as int);
   }
 }

@@ -28,4 +28,14 @@ class BoostsCubit extends Cubit<BoostsState> {
       emit(BoostsFail());
     }
   }
+
+  Future<void> getFullEnergy() async {
+    emit(BoostsLoading());
+    try {
+      await boostsRepository.getFullEnergy();
+      emit(BoostsSuccess());
+    } catch (e) {
+      emit(BoostsFail());
+    }
+  }
 }

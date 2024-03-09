@@ -38,6 +38,22 @@ class BoostsRepository {
     }
   }
 
+  Future<void> getFullEnergy() async {
+    if(mainRepository.user.activeFullEnergy > 0) {
+      final userDoc = FirebaseCollections.userCollection
+          .doc(mainRepository.user.id.toString());
+
+      await userDoc.update({'active_full_energy': FieldValue.increment(-1)});
+      await userDoc.update({'energy': mainRepository.user.maxEnergy});
+
+      mainRepository.user.currentEnergy = mainRepository.user.maxEnergy;
+      mainRepository.user.activeFullEnergy -= 1;
+    }
+    else{
+      throw Exception('закончились свободные слоты');
+    }
+  }
+
   int getCurrentEnergyPrice() {
     return (pow(2, (mainRepository.user.maxEnergy ~/ 1000) + 1) as int) * 1000;
   }

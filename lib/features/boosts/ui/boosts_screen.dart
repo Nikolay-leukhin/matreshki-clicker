@@ -40,9 +40,10 @@ class _BoostsScreenState extends State<BoostsScreen> {
         if (state is BoostsLoading) {
           showDialog(
               context: context,
-              builder: (context) => const Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  ));
+              builder: (context) =>
+              const Center(
+                child: CircularProgressIndicator.adaptive(),
+              ));
         }
       },
       child: Container(
@@ -76,7 +77,7 @@ class _BoostsScreenState extends State<BoostsScreen> {
                         Text(
                           'balance',
                           style:
-                              AppFonts.font15w400.copyWith(color: Colors.white),
+                          AppFonts.font15w400.copyWith(color: Colors.white),
                         ),
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -120,28 +121,38 @@ class _BoostsScreenState extends State<BoostsScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    SizedBox(
-                        height: 109,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SmallBoostWidget(
-                              title: 'Turbo',
-                              activeSlots: 2,
-                              assetSvg: 'rocket.svg',
-                              onTap: () {},
-                            ),
-                            SizedBox(
-                              width: size.width * 0.04,
-                            ),
-                            SmallBoostWidget(
-                              title: 'Full Energy',
-                              activeSlots: 2,
-                              assetSvg: 'light.svg',
-                              onTap: () {},
-                            ),
-                          ],
-                        )),
+                    BlocBuilder<BoostsCubit, BoostsState>(
+                      builder: (context, state) {
+                        return SizedBox(
+                            height: 109,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // SmallBoostWidget(
+                                //   title: 'Turbo',
+                                //   activeSlots: 2,
+                                //   assetSvg: 'rocket.svg',
+                                //   onTap: () {},
+                                //   width: size.width * 0.43,
+                                // ),
+                                // SizedBox(
+                                //   width: size.width * 0.04,
+                                // ),
+                                SmallBoostWidget(
+                                  title: 'Full Energy',
+                                  activeSlots: mainRepository.user
+                                      .activeFullEnergy,
+                                  assetSvg: 'light.svg',
+                                  onTap: () {
+                                    BlocProvider.of<BoostsCubit>(context)
+                                        .getFullEnergy();
+                                  },
+                                  width: size.width * 0.9,
+                                ),
+                              ],
+                            ));
+                      },
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
@@ -168,7 +179,7 @@ class _BoostsScreenState extends State<BoostsScreen> {
                                 title: 'Multitap',
                                 lvl: boostsRepository.getCurrentMultiTapLvl(),
                                 prise:
-                                    boostsRepository.getCurrentMultiTapPrice(),
+                                boostsRepository.getCurrentMultiTapPrice(),
                                 assetIcon: 'multitap.svg',
                                 onTap: () {
                                   BlocProvider.of<BoostsCubit>(context)

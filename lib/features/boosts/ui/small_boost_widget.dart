@@ -10,13 +10,14 @@ class SmallBoostWidget extends StatelessWidget {
   final int activeSlots;
   final String assetSvg;
   final Function() onTap;
+  final double width;
 
   const SmallBoostWidget(
       {super.key,
       required this.title,
       required this.activeSlots,
       required this.assetSvg,
-      required this.onTap});
+      required this.onTap, required this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class SmallBoostWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         child: Container(
           height: 80,
-          width: size.width * 0.43,
+          width: width,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
               color: Colors.transparent, borderRadius: BorderRadius.circular(16)),
@@ -54,7 +55,7 @@ class SmallBoostWidget extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          style: AppFonts.font15w400,
+                          style: AppFonts.font18w400,
                           textAlign: TextAlign.start,
                         ),
                         Text(

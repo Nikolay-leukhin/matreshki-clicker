@@ -70,11 +70,12 @@ class MainRepository {
   }
 
   onTimePicker() async {
-    if (user.currentEnergy <= user.maxEnergy) {
+    if (user.currentEnergy < user.maxEnergy) {
       user.currentEnergy +=
-          (user.currentEnergy + user.scorePerClick > user.maxEnergy)
-              ? 0
-              : user.scorePerClick;
+          (user.currentEnergy + user.rechargingSpeed > user.maxEnergy)
+              ? user.maxEnergy - user.currentEnergy
+              : user.rechargingSpeed;
+
       EasyDebounce.debounce(
           "increment", const Duration(microseconds: 1), updateData);
     }
