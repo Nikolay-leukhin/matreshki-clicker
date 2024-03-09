@@ -7,12 +7,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:matreshka/features/inventory/logic/choose_doll/choose_doll_cubit.dart';
 import 'package:matreshka/features/main/data/main_repository.dart';
 import 'package:matreshka/features/main/logic/main/main_cubit.dart';
-import 'package:matreshka/models/swim_digit_model.dart';
+import 'package:matreshka/features/main/ui/number_widget.dart';
+import 'package:matreshka/models/number.dart';
 import 'package:matreshka/routes/routes_names.dart';
-import 'package:matreshka/utils/colors.dart';
 import 'package:matreshka/utils/fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:uuid/uuid.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -25,7 +26,7 @@ class _MainScreenState extends State<MainScreen> {
   late MainRepository mainRepository;
   final streamOnDigit = BehaviorSubject.seeded(true);
   double matreshkaSize = 0;
-  List<SwimDigit> swimDigits = [];
+  List<Number> swimDigits = [];
 
   _onTapUp() {
     setState(() {
@@ -34,11 +35,11 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   _onTapDown(TapDownDetails details) async {
-    swimDigits.add(SwimDigit(
-        dx: details.globalPosition.dx,
-        dy: details.globalPosition.dy,
-        heightSwim: details.globalPosition.dy - 150,
-        digit: mainRepository.user.scorePerClick));
+    swimDigits.add(Number(
+        key: const Uuid().v4(),
+        value: '5',
+        initialX: details.globalPosition.dx,
+        initialY: details.globalPosition.dy));
 
     HapticFeedback.mediumImpact();
 
@@ -69,29 +70,7 @@ class _MainScreenState extends State<MainScreen> {
       },
     );
 
-    Timer.periodic(
-      oneMilliSec,
-      (Timer timer) {
-        if (swimDigits.isNotEmpty) {
-          setCurrentFrame();
-          streamOnDigit.add(true);
-        }
-      },
-    );
-
     super.initState();
-  }
-
-  setCurrentFrame() {
-    for (var element in swimDigits) {
-      if (element.dy - 1.5 > element.heightSwim) {
-        element.dy -= 1.5;
-      }
-    }
-
-    swimDigits = swimDigits
-        .where((element) => element.dy - 3 > element.heightSwim)
-        .toList();
   }
 
   @override
@@ -284,33 +263,17 @@ class _MainScreenState extends State<MainScreen> {
                 )
               ],
             ),
-            StreamBuilder<bool>(
-              stream: streamOnDigit,
-              builder: (context, state) {
-                return Stack(
-                  children: swimDigits.map((e) {
-                    return Positioned(
-                        left: e.dx,
-                        top: e.dy,
-                        child: GestureDetector(
-                          onTapDown: (TapDownDetails details) {
-                            _onTapDown(details);
-                            BlocProvider.of<MainCubit>(context)
-                                .incrementScore();
-                          },
-                          onTapUp: (_) {
-                            _onTapUp();
-                          },
-                          child: Text(
-                            e.digit.toString(),
-                            style: AppFonts.font29w400.copyWith(
-                                color: AppColors.white10
-                                    .withOpacity((e.dy - e.heightSwim) / 150)),
-                          ),
-                        ));
-                  }).toList(),
+            Stack(
+              children: swimDigits.map((e) {
+                return NumberWidget(
+                  key: Key(e.key),
+                  onAnimationEnd: (key) {
+                    swimDigits.removeWhere((n) => n.key == key);
+                    setState(() {});
+                  },
+                  number: e,
                 );
-              },
+              }).toList(),
             )
           ],
         ),
