@@ -93,6 +93,28 @@ class _MainScreenState extends State<MainScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRouteNames.inventory);
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.all(15),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color(0xff430505)),
+                          child: SvgPicture.asset(
+                            "assets/icons/inventory.svg",
+                            width: 40,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                   const Spacer(),
                   Row(
                     mainAxisSize: MainAxisSize.max,
@@ -240,28 +262,6 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, AppRouteNames.inventory);
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.all(15),
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: const Color(0xff430505)),
-                    child: SvgPicture.asset(
-                      "assets/icons/inventory.svg",
-                      width: 40,
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ),
-                )
-              ],
             ),
             Stack(
               children: swimDigits.map((e) {
