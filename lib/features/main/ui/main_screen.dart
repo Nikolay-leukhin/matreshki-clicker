@@ -59,7 +59,6 @@ class _MainScreenState extends State<MainScreen> {
     mainRepository = RepositoryProvider.of<MainRepository>(context);
 
     const oneSec = Duration(seconds: 1);
-    const oneMilliSec = Duration(milliseconds: 10);
 
     Timer.periodic(
       oneSec,
