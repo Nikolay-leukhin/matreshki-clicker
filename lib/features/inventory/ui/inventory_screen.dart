@@ -175,6 +175,12 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       },
                     ),
                   ),
+
+                  Container(
+                    width: 100,
+                    height: 1000,
+                    color: Colors.red,
+                  )
                 ],
               )),
         ),
