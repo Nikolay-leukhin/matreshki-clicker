@@ -83,6 +83,7 @@ class MainRepository {
 
   initTelegramActions() {
     tg.expand();
+    tg.disableClosingConfirmation();
   }
 
   updateData() async {
